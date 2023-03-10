@@ -50,17 +50,17 @@ function showRowStart($field, $label){
   echo "<div class='col'>";
 }
 function showRowEnd(){
-  echo "</div>";
-  echo "</div>";
+  echo "</div>"; // end .col
+  echo "</div>"; // end .row
 }
 function showFormEnd($page){
   echo "<div class='row'>";
   echo "<div class='col'>";
   echo "<input type='submit' value='Verzend'>";
   echo "<input type='hidden' name='page' value='$page'>";
-  echo "</div>";
-  echo "</div>";
-  echo "</div>";
+  echo "</div>"; // end .col
+  echo "</div>"; // end .row
+  echo "</div>"; // end .form-group
   echo "</form>";
 
 }

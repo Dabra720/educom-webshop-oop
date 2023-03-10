@@ -1,5 +1,5 @@
 <?php
-include_once "basic_doc.php";
+require_once "basic_doc.php";
 
 class AboutDoc extends BasicDoc{
   protected $data;

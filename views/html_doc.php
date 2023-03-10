@@ -1,6 +1,6 @@
 <?php
 
-class HtmlDoc {
+abstract class HtmlDoc {
   private function showHtmlStart(){
     echo '<!DOCTYPE html>';
     echo '<html lang="NL">';

@@ -1,13 +1,13 @@
 <?php
-include_once "html_doc.php";
+require_once "html_doc.php";
 
 class BasicDoc extends HtmlDoc{
   protected $data;
 
-  public function __construct($myData)
-  {
-    $this->data = $myData;
-  }
+  // public function __construct($myData)
+  // {
+  //   $this->data = $myData;
+  // }
 
   private function showTitle(){
     echo '<title>'. $this->data['menu'][$this->data['page']].'</title>';

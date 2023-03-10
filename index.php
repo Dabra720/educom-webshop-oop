@@ -119,19 +119,25 @@ function showResponsePage($data){
 
   switch($data['page']){
     case "home":
-      require_once('views/home_doc.php');
+      require_once 'views/home_doc.php';
       $view = new HomeDoc($data);
       break;
     case "about":
-      require_once('views/about_doc.php');
+      require_once 'views/about_doc.php';
       $view = new AboutDoc($data);
       break;
-    // case "contact":
-    //   break;
-    // case "register":
-    //   break;
-    // case "login":
-    //   break;
+    case "contact":
+      require_once "views/contact_doc.php";
+      $view = new ContactDoc($data);
+      break;
+    case "register":
+      require_once "views/register_doc.php";
+      $view = new RegisterDoc($data);
+      break;
+    case "login":
+      require_once "views/login_doc.php";
+      $view = new LoginDoc($data);
+      break;
     // case "thanks":
     //   break;
     // case "profile":
@@ -157,70 +163,70 @@ function showResponsePage($data){
   // showDocumentEnd();
 }
 
-function showBodySection($data){
-  echo '<body>';
-  showHeader($data);
-  echo '<div class="container-sm pb-4 border" style="max-width: 800px;">';
-  showContent($data);
-  echo '</div>';
-  showFooter();
-  echo '</body>';
-}
+// function showBodySection($data){
+//   echo '<body>';
+//   showHeader($data);
+//   echo '<div class="container-sm pb-4 border" style="max-width: 800px;">';
+//   showContent($data);
+//   echo '</div>';
+//   showFooter();
+//   echo '</body>';
+// }
 
-function showContent($data){
-  switch($data['page']){
-    case "home":
-      require('home.php');
-      showHomeContent();
-      break;
-    case "about":
-      require('about.php');
-      showAboutContent();
-      break;
-    case "contact":
-      require('contact.php');
-      showContactContent($data);
-      break;
-    case "register":
-      require('register.php');
-      showRegisterContent($data);
-      break;
-    case "login":
-      require('login.php');
-      showLoginContent($data);
-      break;
-    case "thanks":
-      require 'contact.php';
-      showContactThanks($data);
-      break;
-    case "profile":
-      require 'profile.php';
-      showProfileContent($data);
-      break;
-    case 'change':
-      require 'profile.php';
-      showChangePasswordForm($data);
-      break;
-    case 'webshop':
-      require 'webshop.php';
-      showWebshopContent($data);
-      break;
-    case 'topFive':
-      require_once 'topFive.php';
-      showTopFiveContent($data);
-      break;
-    case 'detail':
-      require 'detail.php';
-      showDetailContent($data);
-      break;
-    case 'cart':
-      require 'cart.php';
-      showCartContent();
-      break;
-    default:
-      pageNotFound($data);
-  }
-}
+// function showContent($data){
+//   switch($data['page']){
+//     case "home":
+//       require('home.php');
+//       showHomeContent();
+//       break;
+//     case "about":
+//       require('about.php');
+//       showAboutContent();
+//       break;
+//     case "contact":
+//       require('contact.php');
+//       showContactContent($data);
+//       break;
+//     case "register":
+//       require('register.php');
+//       showRegisterContent($data);
+//       break;
+//     case "login":
+//       require('login.php');
+//       showLoginContent($data);
+//       break;
+//     case "thanks":
+//       require 'contact.php';
+//       showContactThanks($data);
+//       break;
+//     case "profile":
+//       require 'profile.php';
+//       showProfileContent($data);
+//       break;
+//     case 'change':
+//       require 'profile.php';
+//       showChangePasswordForm($data);
+//       break;
+//     case 'webshop':
+//       require 'webshop.php';
+//       showWebshopContent($data);
+//       break;
+//     case 'topFive':
+//       require_once 'topFive.php';
+//       showTopFiveContent($data);
+//       break;
+//     case 'detail':
+//       require 'detail.php';
+//       showDetailContent($data);
+//       break;
+//     case 'cart':
+//       require 'cart.php';
+//       showCartContent();
+//       break;
+//     default:
+//       pageNotFound($data);
+//   }
+// }
 
 function showDocumentStart(){
   echo '<!DOCTYPE html>';
