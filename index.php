@@ -115,10 +115,46 @@ function processRequest($page){
 }
 
 function showResponsePage($data){
-  showDocumentStart();
-  showHeadSection($data);
-  showBodySection($data);
-  showDocumentEnd();
+  $view = NULL;
+
+  switch($data['page']){
+    case "home":
+      require_once('views/home_doc.php');
+      $view = new HomeDoc($data);
+      break;
+    case "about":
+      require_once('views/about_doc.php');
+      $view = new AboutDoc($data);
+      break;
+    // case "contact":
+    //   break;
+    // case "register":
+    //   break;
+    // case "login":
+    //   break;
+    // case "thanks":
+    //   break;
+    // case "profile":
+    //   break;
+    // case 'change':
+    //   break;
+    // case 'webshop':
+    //   break;
+    // case 'topFive':
+    //   break;
+    // case 'detail':
+    //   break;
+    // case 'cart':
+    //   break;
+    default:
+      pageNotFound($data);
+  }
+
+  $view->show();
+  // showDocumentStart();
+  // showHeadSection($data);
+  // showBodySection($data);
+  // showDocumentEnd();
 }
 
 function showBodySection($data){
