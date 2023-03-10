@@ -4,13 +4,13 @@ require_once "html_doc.php";
 class BasicDoc extends HtmlDoc{
   protected $data;
 
-  // public function __construct($myData)
-  // {
-  //   $this->data = $myData;
-  // }
-
+  public function __construct($myData)
+  {
+    $this->data = $myData;
+  }
+  
   private function showTitle(){
-    echo '<title>'. $this->data['menu'][$this->data['page']].'</title>';
+    echo '<title>'. ucfirst($this->data['page']).'</title>';
   }
   private function showCSSLinks(){
     echo '<!-- Latest compiled and minified CSS -->
@@ -25,7 +25,7 @@ class BasicDoc extends HtmlDoc{
   private function showHeader(){
     echo '<header></header>';
   }
-  private function showMenu($data){
+  private function showMenu(){
     echo '<nav class="navbar navbar-expand-md bg-primary navbar-dark">';
     echo '<a class="navbar-brand" href="index.php">Navbar</a>';
     echo '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">';
@@ -33,7 +33,7 @@ class BasicDoc extends HtmlDoc{
     echo '</button>';
     echo '<div class="collapse navbar-collapse" id="collapsibleNavbar">';
     echo '<ul class="navbar-nav">';
-    foreach($data['menu'] as $link => $label){
+    foreach($this->data['menu'] as $link => $label){
       $this->showMenuItem($link, $label);
     }
     echo '</ul>';
@@ -67,7 +67,7 @@ class BasicDoc extends HtmlDoc{
 
   protected function showBodyContent(){
     $this->showHeader();
-    $this->showMenu($this->data);
+    $this->showMenu();
     $this->showContentStart();
     $this->showContent();
     $this->showContentEnd();

@@ -2,12 +2,6 @@
 require_once "basic_doc.php";
 
 class AboutDoc extends BasicDoc{
-  protected $data;
-
-  public function __construct($myData)
-  {
-    $this->data = $myData;
-  }
 
   protected function showContent(){
     echo '<h1>Daan Braas</h1>';

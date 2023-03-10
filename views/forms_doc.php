@@ -2,7 +2,6 @@
 require_once "basic_doc.php";
 
 abstract class FormsDoc extends BasicDoc{
-  protected $data;
 
   protected function showFormStart($hasRequiredFields){
     if($hasRequiredFields){
@@ -12,13 +11,12 @@ abstract class FormsDoc extends BasicDoc{
     echo "<div class='form-group'>";
   }
   protected function showFormField($field, $label, $type, $data, $required=true, $options=NULL){
-
     switch($type){
       case 'select':
         $this->showRowStart($label);
         echo "<select name='$field' id='$field' class='form-control'>";
         foreach(SALUTATIONS as $key=>$label){
-          echo "<option value='$key' "; if (getArrayVar($data['values'], $field)==$label) echo "selected"; echo " >$label</option>"; 
+          echo "<option value='$key' "; if (getArrayVar($data['values'], $field)==$label) echo "selected"; echo " >$label</option>";
         }
         echo '</select><span class="text-danger">* '.getArrayVar($data['errors'], $field).'</span>';
         $this->showRowEnd();

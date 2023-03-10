@@ -2,12 +2,7 @@
 require_once "forms_doc.php";
 
 class ContactDoc extends FormsDoc{
-  protected $data;
-
-  public function __construct($myData)
-  {
-    $this->data = $myData;
-  }
+  
   private function showForm(){
     $this->showFormStart(true);
     $this->showFormField('aanhef', 'Aanhef', 'select', $this->data, true, SALUTATIONS);
