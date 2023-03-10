@@ -140,14 +140,18 @@ function showResponsePage($data){
       require_once "views/change_password_doc.php";
       $view = new ChangePasswordDoc($data);
       break;
-    // case 'webshop':
-    //   break;
+    case 'webshop':
+      require_once "views/webshop_doc.php";
+      $view = new WebshopDoc($data);
+      break;
     // case 'topFive':
     //   break;
     // case 'detail':
     //   break;
-    // case 'cart':
-    //   break;
+    case 'cart':
+      require_once "views/cart_doc.php";
+      $view = new CartDoc($data);
+      break;
     default:
       pageNotFound($data);
   }
