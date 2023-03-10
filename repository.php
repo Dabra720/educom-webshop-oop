@@ -119,6 +119,8 @@ function storeOrder($user_id, $cartContent){
 
     $last_id = mysqli_insert_id($conn);
     foreach($cartContent as $key=>$value){
+      mysqli_real_escape_string($conn, $key);
+      mysqli_real_escape_string($conn, $value);
       $sql2 = "INSERT INTO invoice_row(invoice_id, product_id, quantity) VALUES($last_id, $key, $value)";
       mysqli_query($conn, $sql2);
     }
