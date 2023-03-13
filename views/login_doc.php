@@ -5,8 +5,8 @@ class LoginDoc extends FormsDoc{
   
   private function showForm(){
     $this->showFormStart(true);
-    $this->showFormField('email', 'E-Mail', 'email', $this->data);
-    $this->showFormField('password', 'Wachtwoord', 'password', $this->data);
+    $this->showFormField('email', 'E-Mail', 'email', $this->model);
+    $this->showFormField('password', 'Wachtwoord', 'password', $this->model);
     $this->showFormEnd('login');
   }
   protected function showContent()

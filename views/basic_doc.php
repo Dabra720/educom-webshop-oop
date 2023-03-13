@@ -2,15 +2,15 @@
 require_once "html_doc.php";
 
 class BasicDoc extends HtmlDoc{
-  protected $data;
+  protected $model;
 
-  public function __construct($myData)
+  public function __construct($pageModel)
   {
-    $this->data = $myData;
+    $this->model = $pageModel;
   }
   
   private function showTitle(){
-    echo '<title>'. ucfirst($this->data['page']).'</title>';
+    echo '<title>'. ucfirst($this->model->page).'</title>';
   }
   private function showCSSLinks(){
     echo '<!-- Latest compiled and minified CSS -->
@@ -33,8 +33,8 @@ class BasicDoc extends HtmlDoc{
     echo '</button>';
     echo '<div class="collapse navbar-collapse" id="collapsibleNavbar">';
     echo '<ul class="navbar-nav">';
-    foreach($this->data['menu'] as $link => $label){
-      $this->showMenuItem($link, $label);
+    foreach($this->model->menu as $menuItem){
+      $menuItem->showMenuItem();
     }
     echo '</ul>';
     echo '</div>';
@@ -49,7 +49,7 @@ class BasicDoc extends HtmlDoc{
     echo '<div class="container-sm pb-4 border" style="max-width: 800px;">';
   }
   protected function showContent(){
-
+    echo '<h1>PAGE NOT FOUND 404</h1>';
   }
   private function showContentEnd(){
     echo '</div>';

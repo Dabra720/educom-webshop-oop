@@ -2,18 +2,13 @@
 require_once "forms_doc.php";
 
 class RegisterDoc extends FormsDoc{
-  protected $data;
 
-  public function __construct($myData)
-  {
-    $this->data = $myData;
-  }
   private function showForm(){
     $this->showFormStart(TRUE);
-	  $this->showFormField('name', 'Naam', 'text', $this->data);
-    $this->showFormField('email', 'E-Mail', 'email', $this->data);
-    $this->showFormField('password', 'Wachtwoord', 'password', $this->data);
-    $this->showFormField('pass_rep', 'Herhaal wachtwoord', 'password', $this->data);
+	  $this->showFormField('name', 'Naam', 'text', $this->model);
+    $this->showFormField('email', 'E-Mail', 'email', $this->model);
+    $this->showFormField('password', 'Wachtwoord', 'password', $this->model);
+    $this->showFormField('pass_rep', 'Herhaal wachtwoord', 'password', $this->model);
     $this->showFormEnd('register');
   }
 

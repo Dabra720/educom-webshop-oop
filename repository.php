@@ -111,6 +111,8 @@ function storeOrder($user_id, $cartContent){
   $conn = databaseConnection();
 
   try{
+    mysqli_autocommit($conn, FALSE); //Eerst alle query's klaar zetten voor dat ze commit worden
+
     $sql1 = "INSERT INTO invoice (date, user_id) VALUE(CURRENT_DATE(),'$user_id')";
     $result = mysqli_query($conn, $sql1);
     if(!$result){
@@ -125,7 +127,12 @@ function storeOrder($user_id, $cartContent){
       mysqli_query($conn, $sql2);
     }
 
-  }finally{
+    mysqli_commit($conn); // Nu alle query's verwerken, rollback als er 1 niet goed gaat.
+
+  } catch(Exception $ex){
+    logDebug("storeOrder failed: " . $ex->getMessage());
+  }
+  finally{
     mysqli_close($conn);
   }
 }
