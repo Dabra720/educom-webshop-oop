@@ -144,10 +144,14 @@ function showResponsePage($data){
       require_once "views/webshop_doc.php";
       $view = new WebshopDoc($data);
       break;
-    // case 'topFive':
-    //   break;
-    // case 'detail':
-    //   break;
+    case 'topFive':
+      require_once "views/topFive_doc.php";
+      $view = new TopFiveDoc($data);
+      break;
+    case 'detail':
+      include_once "views/detail_doc.php";
+      $view = new DetailDoc($data);
+      break;
     case 'cart':
       require_once "views/cart_doc.php";
       $view = new CartDoc($data);

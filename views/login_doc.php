@@ -2,12 +2,7 @@
 require_once "forms_doc.php";
 
 class LoginDoc extends FormsDoc{
-  protected $data;
-
-  public function __construct($myData)
-  {
-    $this->data = $myData;
-  }
+  
   private function showForm(){
     $this->showFormStart(true);
     $this->showFormField('email', 'E-Mail', 'email', $this->data);

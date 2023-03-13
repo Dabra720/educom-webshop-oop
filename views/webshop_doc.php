@@ -11,7 +11,7 @@ class WebshopDoc extends ProductDoc{
     echo "<h3>".$value['name']."</h3>";
     echo "</div>"; // card-header
     echo "<div class='card-body'>";
-    echo "<img src='Images/".$value['filename']."' alt='".$value['name']."' class='img-fluid'>";
+    echo "<img src='../Images/".$value['filename']."' alt='".$value['name']."' class='img-fluid'>";
     echo "</div>"; // card-body
     echo "</a>";
     echo "<div class='card-footer'>";
