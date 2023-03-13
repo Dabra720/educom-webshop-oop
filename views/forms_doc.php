@@ -16,7 +16,7 @@ abstract class FormsDoc extends BasicDoc{
         $this->showRowStart($label);
         echo "<select name='$field' id='$field' class='form-control'>";
         foreach($this->model->salutations as $key=>$label){
-          echo "<option value='$key' "; if (Util::getArrayVar($this->model->values, $field)==$label) echo "selected"; echo " >$label</option>";
+          echo "<option value='$label' "; if (Util::getArrayVar($this->model->values, $field)==$key) echo "selected"; echo " >$key</option>";
         }
         echo '</select><span class="text-danger">* '.Util::getArrayVar($this->model->errors, $field).'</span>';
         $this->showRowEnd();

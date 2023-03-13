@@ -3,9 +3,9 @@
 class Util{
 
   // // Haal een value uit de 'values' array, deze wordt volgens mij niet meer gebruikt.
-  // public static function getValue($data, $key, $default=''){
-  //   return getArrayVar($data['values'], $key, $default);
-  // }
+  public static function getValue($data, $key, $default=''){
+    return getArrayVar($data, $key, $default);
+  }
 
   // Haal een value uit de opgegeven array, aan de hand van een $key
   public static function getArrayVar($array, $key, $default='') 

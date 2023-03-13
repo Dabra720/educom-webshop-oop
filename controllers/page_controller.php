@@ -110,6 +110,10 @@ class PageController{
         require_once "views/contact_doc.php";
         $view = new ContactDoc($this->model);
         break;
+      case "thanks":
+        require_once "views/contact_thanks_doc.php";
+        $view = new ContactThanksDoc($this->model);
+        break;
       case "register":
         require_once "views/register_doc.php";
         $view = new RegisterDoc($this->model);
@@ -117,10 +121,6 @@ class PageController{
       case "login":
         require_once "views/login_doc.php";
         $view = new LoginDoc($this->model);
-        break;
-      case "thanks":
-        require_once "views/contact_thanks_doc.php";
-        $view = new ContactThanksDoc($this->model);
         break;
       case "profile":
         require_once "views/profile_doc.php";

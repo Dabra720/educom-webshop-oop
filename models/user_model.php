@@ -4,7 +4,7 @@ require_once "page_model.php";
 class UserModel extends PageModel{
   public $values = array();
   public $errors = array();
-  public $salutations = array("None"=>"-", "Dhr"=>"Dhr", "Mvr"=>"Mvr");
+  public $salutations = array("-"=>"invalid", "Dhr"=>"Dhr", "Mvr"=>"Mvr", "Geen aanhef"=>"none");
   public $comm_prefs = array("email"=>"E-Mail", "phone"=>"Telefoon");
   public $valid = false;
 
@@ -34,7 +34,17 @@ class UserModel extends PageModel{
 
   private function authenticateUser(){
     require_once "repository.php";
-    $user = findUserByEmail($this->values['email']);
+    // Util::logDebug("Passwords: ".Util::getArrayVar($this->values,'email'));
+    $user = findUserByEmail(Util::getPostVar('email'));
+    // Util::logDebug("Passwords: ".$user['password']." ".$this->values['password']);
+    // Util::logDebug($user);
+    var_dump($user);
+    if(!empty($user)){
+      // Util::logDebug("Passwords: ".$user['password']." ".$this->values['password']);
+      if($user['password']==Util::getPostVar('password')){
+        // $this->valid = true;
+      }
+    } 
   }
 
   public function doLoginUser(){
@@ -69,14 +79,18 @@ class UserModel extends PageModel{
   
     $this->values[$value] = Util::getPostVar($value);
   
-    if(empty(Util::getPostVar($value))){
+    if(empty($this->values[$value])){
       $this->errors[$value] = ucfirst($value) . " is required";
     } else {
       switch($checkFields[0]){
         case 'aanhefValid':
-          if(Util::getPostVar($value)!="None"){
-            if(!in_array(Util::getPostVar($value), $this->salutations)){
-            $this->errors[$value] = "Not an option";
+          // Util::logDebug("aanhef: " . $this->values[$value]);
+          if($this->values[$value]!="invalid"){
+            // Util::logDebug($this->salutations);
+            if(!in_array($this->values[$value], $this->salutations)){
+              $this->errors[$value] = "Not an option";
+            }else{
+              $this->values[$value] = "";
             }
           }else{
             $this->errors[$value] = "Pick an option";
@@ -95,17 +109,17 @@ class UserModel extends PageModel{
           }
           break;
         case 'phoneValid':
-          if(!preg_match('/^[0-9]{10}+$/', Util::getPostVar('phone'))){
+          if(!preg_match('/^[0-9]{10}+$/', $this->values[$value])){
             $this->errors[$value] = "Not a valid Phone number";
           }
           break;
         case 'prefValid':
-          if(!in_array(Util::getPostVar($value), $this->comm_prefs)){
+          if(!in_array($this->values[$value], $this->comm_prefs)){
             $this->errors[$value] = "Not an option";
           }
           break;
         case 'pass_rep':
-          if(strcmp(Util::getPostVar($value), $this->values[$checkFields[1]])){
+          if(strcmp($this->values[$value], $this->values[$checkFields[1]])){
             $this->errors[$value] = "Passwords don't match";
             $this->errors[$checkFields[1]] = "Passwords don't match";
             $this->values[$value] = "";
