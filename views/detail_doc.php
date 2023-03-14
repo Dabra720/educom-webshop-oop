@@ -7,21 +7,21 @@ class DetailDoc extends ProductDoc{
   {
     echo '<div class="product_detail">';
     echo '<div class="product_image">';
-    echo '<img src="../Images/'.getArrayVar($this->data['product'], 'filename').'" style="width:80%;height:100%">';
+    echo '<img src="../Images/'.getArrayVar($this->model->product, 'filename').'" style="width:80%;height:100%">';
     echo '</div>';
     echo '<div class="product_title">';
-    echo getArrayVar($this->data['product'], 'name');
+    echo getArrayVar($this->model->product, 'name');
     echo '</div>';
     echo '<div class="product_price">';
-    echo '&#8364; '.getArrayVar($this->data['product'], 'price');
+    echo '&#8364; '.getArrayVar($this->model->product, 'price');
     echo '</div>';
     echo '<div class="">';
     echo '<div class="product_description">';
-    echo '<p>'.getArrayVar($this->data['product'], 'description').'</p>';
+    echo '<p>'.getArrayVar($this->model->product, 'description').'</p>';
         
     echo '</div>';
     if(isUserLoggedIn()){    
-      addAction('detail', 'updateCart', 'Update cart', getArrayVar($this->data['product'], 'id'), getArrayVar($this->data['product'], 'name'));
+      addAction('detail', 'updateCart', 'Update cart', getArrayVar($this->model->product, 'id'), getArrayVar($this->model->product, 'name'));
     }
     echo '</div>';
   }
