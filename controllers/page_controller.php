@@ -60,7 +60,7 @@ class PageController{
       case 'profile':
         require_once "models/user_model.php";
         $this->model = new UserModel($this->model);
-        if(isset($_SESSION['name'])){
+        if(SessionManager::isUserLoggedIn()){// Autorisatie check bouwen in Usermodel.
           $this->model->validatePasswordChange();
           $this->model->setPage('profile');
         } else {
@@ -76,21 +76,26 @@ class PageController{
           $this->model->setPage('profile');
         } else {$this->model->setPage('change');}
         break;
-    //   case 'webshop':
-    //     handleActions();
-    //     $data = getProducts();
-    //     break;
+      case 'webshop':
+        require_once "models/product_model.php";
+        $this->model = new ProductModel($this->model);
+        $this->model->handleActions();
+        $this->model->getProducts();
+        break;
     //   case 'topFive':
     //     $data = getTopFive();
     //     break;
-    //   case 'detail':
-    //     handleActions();
-    //     if($_SERVER['REQUEST_METHOD'] == "GET"){
-    //       $data['product'] = getProductBy('id', getUrlVar('id'));
-    //     } else{
-    //       $data['product'] = getProductBy('id', getPostVar('id'));
-    //     }
-    //     break;
+      case 'detail':
+        require_once "models/product_model.php";
+        $this->model = new ProductModel($this->model);
+        $this->model->handleActions();
+        $this->model->setProduct();
+        // if($_SERVER['REQUEST_METHOD'] == "GET"){
+        //   $data['product'] = getProductBy('id', getUrlVar('id'));
+        // } else{
+        //   $data['product'] = getProductBy('id', getPostVar('id'));
+        // }
+        break;
     //   case 'cart':
     //     handleActions();
     //     break;

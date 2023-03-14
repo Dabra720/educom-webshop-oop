@@ -49,9 +49,9 @@ class SessionManager{
   }
 
   public function getAmountFromCart($productId){
-    $amount = getArrayVar(getCartContent(),$productId);
+    // $amount = getArrayVar(getCartContent(),$productId);
     // debug_to_console($amount);
-    return getArrayVar(getCartContent(),$productId);
+    return Util::getArrayVar($this->getCartContent(),$productId);
   }
 
 }

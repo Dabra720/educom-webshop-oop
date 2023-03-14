@@ -8,6 +8,8 @@ class PageModel{
   protected $isPost = false;
   public $menu;
   protected $sessionManager;
+  public $login = false;
+  public $valid = false;
 
   public function __construct($copy){
     if(empty($copy)){
@@ -37,6 +39,10 @@ class PageModel{
 
   public function setPage($newPage){
     $this->page = $newPage;
+  }
+
+  public function loggedIn(){
+    $this->sessionManager-
   }
 
   public function createMenu(){

@@ -11,7 +11,7 @@ class WebshopDoc extends ProductDoc{
     echo "<h3>".$value['name']."</h3>";
     echo "</div>"; // card-header
     echo "<div class='card-body'>";
-    echo "<img src='../Images/".$value['filename']."' alt='".$value['name']."' class='img-fluid'>";
+    echo "<img src='../educom-webshop-oop/Images/".$value['filename']."' alt='".$value['name']."' class='img-fluid'>";
     echo "</div>"; // card-body
     echo "</a>";
     echo "<div class='card-footer'>";
@@ -19,8 +19,8 @@ class WebshopDoc extends ProductDoc{
     echo "<h3>&#8364; ".number_format($value['price'],2,',','.')."</h3>"; 
     echo "</div>"; // float-left
     echo "<div class='float-right'>";
-    if(isUserLoggedIn()){
-      addAction('webshop', 'updateCart', 'Update Cart', $value['id'], $value['name']);
+    if(SessionManager::isUserLoggedIn()){
+      $this->model->addAction('webshop', 'updateCart', 'Update Cart', $value['id'], $value['name']);
     }
     echo "</div>"; // float-right
     echo "</div>"; // card-footer
@@ -32,7 +32,7 @@ class WebshopDoc extends ProductDoc{
   {
     echo '<h1>Producten</h1>';
     echo "<div class='row row-cols-1 row-cols-md-2'>";
-    foreach($this->data['products'] as $key => $value){
+    foreach($this->model->products as $key => $value){
       $this->showProduct($value);
     }
     echo "</div>";

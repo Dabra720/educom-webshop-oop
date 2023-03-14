@@ -78,10 +78,10 @@ function selectProducts(){
   $conn = databaseConnection();
   $sql = "SELECT * FROM products";
 
-  $data['products'] = mysqli_query($conn, $sql);
+  $products = mysqli_query($conn, $sql);
 
   mysqli_close($conn);
-  return $data;
+  return $products;
 }
 
 function findProductById($id){

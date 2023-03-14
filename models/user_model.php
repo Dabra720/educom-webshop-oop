@@ -6,12 +6,13 @@ class UserModel extends PageModel{
   public $errors = array();
   public $salutations = array("-"=>"invalid", "Dhr"=>"Dhr", "Mvr"=>"Mvr", "Geen aanhef"=>"none");
   public $comm_prefs = array("email"=>"E-Mail", "phone"=>"Telefoon");
-  public $valid = false;
+  
 
   public function __construct($pageModel)
   {
     PARENT::__construct($pageModel);
   }
+
   // =================================================== PASSWORD CHANGE ========================================================
   public function validatePasswordChange(){
 

@@ -41,6 +41,14 @@ class Util{
 
     echo "<script>console.log('Debug Objects: " . $output . "');</script>";
   }
+
+  // debugToConsole 2.0, escape all ' characters.
+  function debugToConsole($data) {
+    $output = str_replace("'", "\\'" , $data); // escape all possible ' characters.
+    if (is_array($output))
+        $output = implode(',', $output);
+    echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+  }
 }
 
 ?>
