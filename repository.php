@@ -61,11 +61,11 @@ function saveUser($email, $name, $password){
 
 }
 
-function updateUser($key, $value){
+function setUser($key, $value, $id){
   $conn = databaseConnection();
   
   try{
-    $sql = "UPDATE users SET $key='$value' WHERE id='".getCurrentUser('id'). "'";
+    $sql = "UPDATE users SET $key='$value' WHERE id='$id'";
     mysqli_query($conn, $sql);
   } finally {
     mysqli_close($conn);

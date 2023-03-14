@@ -13,7 +13,6 @@ class PageModel{
     if(empty($copy)){
       // First instance of PageModel
       $this->sessionManager = new SessionManager();
-      $this->createMenu();
     }else{
       // Called from the constructor of an extended class...
       $this->page = $copy->page;

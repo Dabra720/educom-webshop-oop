@@ -21,6 +21,7 @@ class PageController{
 
   // Business flow code
   private function processRequest(){
+    
     switch ($this->model->page){
       case 'login':
         require_once "models/user_model.php";
@@ -28,13 +29,15 @@ class PageController{
         $this->model->validateLogin();
         if($this->model->valid){
           $this->model->doLoginUser($this->model->values);
-          $this->model->setPage("login");
+          // $this->model->createMenu();
+          $this->model->setPage("home");
         }
         break;
       case 'logout':
         require_once "models/user_model.php";
         $this->model = new UserModel($this->model);
         $this->model->doLogoutUser();
+        // $this->model->createMenu();
         $this->model->setPage("home");
         break;
       case 'contact';
@@ -45,30 +48,34 @@ class PageController{
           $this->model->setPage('thanks');
         }
         break;
-    //   case 'register':
-    //     $data = validateRegister();
-    //     if($data['validForm']){
-    //       storeUser($data['values']['email'], $data['values']['name'], $data['values']['password']);
-    //       $page = 'login';
-    //     }
-    //     break;
-    //   case 'profile':
-    //       if(isUserLoggedIn()){
-    //         $data = validateChangePassword();
-    //         $page='profile';
-    //       } else {
-    //         $data = validateLogin();
-    //         $page ='login';
-    //       }
-    //     break;
-    //   case 'change':
-    //     $data = validateChangePassword();
-    //     if($data['validForm']){
-    //       updateUser('password', $data['values']['new_pass']);
-    //       $data = validateChangePassword();
-    //       $page = 'profile';
-    //     } else {$page = 'change';}
-    //     break;
+      case 'register':
+        require_once "models/user_model.php";
+        $this->model = new UserModel($this->model);
+        $this->model->validateRegister();
+        if($this->model->valid){
+          $this->model->storeUser($this->model->values['email'], $this->model->values['name'], $this->model->values['password']);
+          $this->model->setPage('login');
+        }
+        break;
+      case 'profile':
+        require_once "models/user_model.php";
+        $this->model = new UserModel($this->model);
+        if(isset($_SESSION['name'])){
+          $this->model->validatePasswordChange();
+          $this->model->setPage('profile');
+        } else {
+          $this->model->setPage('login');
+        }
+        break;
+      case 'change':
+        require_once "models/user_model.php";
+        $this->model = new UserModel($this->model);
+        $this->model->validatePasswordChange();
+        if($this->model->valid){
+          $this->model->updateUser('password', $this->model->values['new_pass']);
+          $this->model->setPage('profile');
+        } else {$this->model->setPage('change');}
+        break;
     //   case 'webshop':
     //     handleActions();
     //     $data = getProducts();
@@ -95,6 +102,7 @@ class PageController{
 
   // to client: presentatie laag
   private function showResponsePage(){
+    $this->model->createMenu();
     $view = NULL;
 
     switch($this->model->page){

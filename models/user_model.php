@@ -12,7 +12,96 @@ class UserModel extends PageModel{
   {
     PARENT::__construct($pageModel);
   }
-  
+  // =================================================== PASSWORD CHANGE ========================================================
+  public function validatePasswordChange(){
+
+    $old_pass = Util::getPostVar('old_pass');
+    $new_pass = Util::getPostVar('new_pass');
+    $pass_rep = Util::getPostVar('new_pass_rep');
+
+    $user = $this->getUserBy('id', $this->sessionManager->getCurrentUser('id'));
+    if($user){
+      // debug_to_console("ValidateProfile: " . $user['name']);
+      $this->values['old_pass'] = $old_pass;
+      $this->values['new_pass'] = $new_pass;
+      $this->values['new_pass_rep'] = $pass_rep;
+      $this->values['id'] = $user['id'];
+      $this->values['name'] = $user['name'];
+      $this->values['email'] = $user['email'];
+      $this->values['password'] = $user['password'];
+    }
+
+    if($this->isPost){
+      $this->validateField('old_pass', 'isEmpty');
+      if($old_pass == $user['password']){
+        $this->validateField('new_pass_rep', 'pass_rep:new_pass');
+      } else {
+        $this->errors['old_pass'] = "Password is incorrect";
+      }
+      if(empty($this->errors)){
+        $this->valid = true;
+        $this->values['password'] = $new_pass;
+      }
+    }
+  }
+
+  public function getUserBy($search, $value){
+    require_once "repository.php";
+    switch($search){
+      case 'email':
+        $user = findUserByEmail($value);
+        return $user;
+      case 'id':
+        $user = findUserById($value);
+        return $user;
+    }
+    return NULL;
+  }
+
+  public function updateUser($key, $value){
+    require_once "repository.php";
+    setUser($key, $value, $this->sessionManager->getCurrentUser('id'));
+  }
+
+  // ====================================================== REGISTER ============================================================
+  public function validateRegister(){
+    if($this->isPost){
+      $this->validateField('email', 'emailValid');
+      $this->validateField('name', 'nameValid');
+      $this->validateField('password', 'isEmpty');
+      $this->validateField('pass_rep', 'pass_rep:password');
+
+      try{
+        if(!empty($this->values['email'])){
+          if($this->doesEmailExist($this->values['email'])){
+            $this->errors['email'] = "Already exists";
+          } else{
+            if(empty($data['errors'])){
+              $this->valid = true;
+            }
+          }
+        }
+      } catch (Exception $ex){
+        $this->errors['generic'] = "Er is een technische storing, probeer het later nogmaals.";
+        Util::logDebug("Register failed: " . $ex->getMessage());
+      }
+    }
+    // return $data;
+  }
+
+  private function doesEmailExist($email){
+    require_once "repository.php";
+    if(!is_null(findUserByEmail($email))){
+      return true;
+    } else {return false;}
+  }
+
+  public function storeUser($email, $name, $password){
+    require_once "repository.php";
+    saveUser($email, $name, $password);
+  }
+
+  // ====================================================== LOGIN ============================================================ 
   public function validateLogin(){
     if($this->isPost){
       try{
@@ -34,17 +123,13 @@ class UserModel extends PageModel{
 
   private function authenticateUser(){
     require_once "repository.php";
-    // Util::logDebug("Passwords: ".Util::getArrayVar($this->values,'email'));
     $user = findUserByEmail(Util::getPostVar('email'));
-    // Util::logDebug("Passwords: ".$user['password']." ".$this->values['password']);
-    // Util::logDebug($user);
-    var_dump($user);
     if(!empty($user)){
-      // Util::logDebug("Passwords: ".$user['password']." ".$this->values['password']);
       if($user['password']==Util::getPostVar('password')){
-        // $this->valid = true;
+        return $user;
       }
-    } 
+    }
+    return NULL;
   }
 
   public function doLoginUser(){
@@ -55,8 +140,7 @@ class UserModel extends PageModel{
     $this->sessionManager->doLogoutUser();
   }
 
-  // Valideer alle gegevens in het Contactform
-
+  // ====================================================== CONTACT ============================================================
   public function validateContact(){
 
     if($this->isPost){
@@ -73,7 +157,7 @@ class UserModel extends PageModel{
     }
   }
 
-  // Validate per veld, gebruikt in alle validate functies.
+  // ====================================================== FIELDS ============================================================
   private function validateField($value, $check){
     $checkFields = explode(":", $check);
   
