@@ -130,14 +130,14 @@ function storeOrder($user_id, $cartContent){
     mysqli_commit($conn); // Nu alle query's verwerken, rollback als er 1 niet goed gaat.
 
   } catch(Exception $ex){
-    logDebug("storeOrder failed: " . $ex->getMessage());
+    Util::logDebug("storeOrder failed: " . $ex->getMessage());
   }
   finally{
     mysqli_close($conn);
   }
 }
 
-function selectTopFive(){
+function getTopFive(){
   $conn = databaseConnection();
 
   $sql = "SELECT p.id, p.name, p.price, p.filename, SUM(ir.quantity) AS quantity
@@ -148,7 +148,7 @@ function selectTopFive(){
   GROUP BY p.id
   ORDER BY quantity DESC
   LIMIT 5";
-  $result['top'] = mysqli_query($conn, $sql);
+  $result = mysqli_query($conn, $sql);
   mysqli_close($conn);
   return $result;
   

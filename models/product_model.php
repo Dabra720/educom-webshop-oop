@@ -4,28 +4,34 @@ require_once "page_model.php";
 class ProductModel extends PageModel{
   public $products = array();
   public $product = array();
+  // public $topFive = array();
 
   public function __construct($pageModel)
   {
     PARENT::__construct($pageModel);
   }
 
-  public function validateProduct(){
-    if($this->isPost){
-      $this->product['id'] = Util::getPostVar('id');
-      $this->product['amount'] = Util::getPostVar('amount');
-    }
-    if(!empty($data['product'])){
-      $this->valid = true;
-    }
-  }
+  // public function validateProduct(){
+  //   if($this->isPost){
+  //     $this->product['id'] = Util::getPostVar('id');
+  //     $this->product['amount'] = Util::getPostVar('amount');
+  //   }
+  //   if(!empty($data['product'])){
+  //     $this->valid = true;
+  //   }
+  // }
 
-  public function setProduct(){
-    if($this->isPost){
-      $this->product = $this->getProductBy('id', Util::getPostVar('id'));
-    } else {
-      $this->product = $this->getProductBy('id', Util::getUrlVar('id'));
+  public function setProduct($id=NULL){
+    if(is_null($id)){
+      if($this->isPost){
+        $this->product = $this->getProductBy('id', Util::getPostVar('id'));
+      } else {
+        $this->product = $this->getProductBy('id', Util::getUrlVar('id'));
+      }
+    } else{
+      $this->product = $this->getProductBy('id', $id);
     }
+    
   }
 
   public function getProducts(){
@@ -41,6 +47,15 @@ class ProductModel extends PageModel{
         return $product;
     }
     return NULL;
+  }
+
+  public function setTopFive(){
+    require_once "repository.php";
+    $this->products = getTopFive();
+  }
+
+  public function setCartContent(){
+    $this->products = $this->sessionManager->getCartContent();
   }
 
   // Om het toevoegen van een knop makkelijker te maken

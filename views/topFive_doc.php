@@ -7,7 +7,7 @@ class TopFiveDoc extends ProductDoc{
     echo '<tr>';
     echo '<td>';
     echo '<a href="index.php?page=detail&id='. $value['id'] .'" class="cart_link">';
-    echo '<img src="../Images/'.$value['filename'].'" class="rounded-circle" style="height:50px; width:auto;">';
+    echo '<img src="../educom-webshop-oop/Images/'.$value['filename'].'" class="rounded-circle" style="height:50px; width:auto;">';
     echo '</a></td>';
     echo '<td><a href="index.php?page=detail&id='. $value['id'] .'" class="cart_link">'. $value['name'] .'</a></td>';
     echo '<td><a href="index.php?page=detail&id='. $value['id'] .'" class="cart_link">'. $value['quantity'] .'</a></td>';
@@ -28,7 +28,7 @@ class TopFiveDoc extends ProductDoc{
     echo '</tr>';
     echo '</thead>';
     echo '<tbody>';
-    foreach($this->data['top'] as $key => $value){
+    foreach($this->model->products as $key => $value){
       // debug_to_console("key: " . $key);
       // debug_to_console("value: " . $value['id']);
       $this->showTopFiveRow($value);

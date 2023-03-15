@@ -6,7 +6,7 @@ class CartDoc extends ProductDoc{
   protected function showContent()
   {
     $total = 0;
-    $cartContent = getCartContent();
+    // $cartContent = getCartContent();
 
     echo "<h1>Winkelwagen</h1>";
     echo "<div class='row'>";
@@ -16,28 +16,31 @@ class CartDoc extends ProductDoc{
     echo "<div class='col'><p class='font-weight-bold'>Prijs</p></div>";
     echo "<div class='col'><p class='font-weight-bold'>Wijzig</p></div>";
     echo "</div>";
-    foreach($cartContent as $id=>$amount){
-      $product = getProductBy('id', $id);
-      $price = $product['price'] * $amount;
+    foreach($this->model->products as $id=>$amount){
+      // $product = getProductBy('id', $id);
+      $this->model->setProduct($id);
+      $price = $this->model->product['price'] * $amount;
       $total += $price;
       
       echo "<div class='row border'>";
       
       echo "<div class='col'>";
       echo "<a href='index.php?page=detail&id=$id' class='stretched-link'>";
-      echo "<img src='Images/".$product['filename']."' class='rounded-circle' style='height:50px;width:50px;'>";
+      echo "<img src='Images/".$this->model->product['filename']."' class='rounded-circle' style='height:50px;width:50px;'>";
       echo "</a>";
       echo "</div>";
       echo "<div class='col'>";
       echo "<a href='index.php?page=detail&id=$id' class='stretched-link text-decoration-none'>";
-      echo $product['name']."</div>";
+      echo $this->model->product['name']."</div>";
       echo "</a>";
       echo "<div class='col'>
       <a href='index.php?page=detail&id=$id' class='stretched-link text-decoration-none'>";
       echo $amount."</a></div>";
       echo "<div class='col'>";
       echo "<a href='index.php?page=detail&id=$id' class='stretched-link text-decoration-none'>&#8364; ".number_format($price,2,',','.')."</a></div>";
-      echo "<div class='col'>"; addAction('cart', 'updateCart', 'Wijzig', $id); echo "</div>";
+      echo "<div class='col'>"; 
+      $this->model->addAction('cart', 'updateCart', 'Wijzig', $id); 
+      echo "</div>";
       echo "</div>";
       
     }
@@ -50,7 +53,7 @@ class CartDoc extends ProductDoc{
     echo "<p>&#8364; ".number_format($total,2,',','.')."</p>";
     echo "</div>";
     echo "<div class='col pt-4'>";
-    addAction('home', 'order', 'Afrekenen');
+    $this->model->addAction('home', 'order', 'Afrekenen');
     echo "</div>";
     echo "</div>";
   }

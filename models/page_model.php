@@ -8,7 +8,7 @@ class PageModel{
   protected $isPost = false;
   public $menu;
   protected $sessionManager;
-  public $login = false;
+  public $loggedIn = false;
   public $valid = false;
 
   public function __construct($copy){
@@ -41,8 +41,8 @@ class PageModel{
     $this->page = $newPage;
   }
 
-  public function loggedIn(){
-    $this->sessionManager-
+  public function hasAuthorisation(){
+    return $this->sessionManager->isUserLoggedIn();
   }
 
   public function createMenu(){

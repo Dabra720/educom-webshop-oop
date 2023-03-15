@@ -19,7 +19,7 @@ class WebshopDoc extends ProductDoc{
     echo "<h3>&#8364; ".number_format($value['price'],2,',','.')."</h3>"; 
     echo "</div>"; // float-left
     echo "<div class='float-right'>";
-    if(SessionManager::isUserLoggedIn()){
+    if($this->model->hasAuthorisation()){
       $this->model->addAction('webshop', 'updateCart', 'Update Cart', $value['id'], $value['name']);
     }
     echo "</div>"; // float-right
