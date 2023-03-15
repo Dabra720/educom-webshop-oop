@@ -48,7 +48,7 @@ function findUserById($id){
   }
 }
 
-function saveUser($email, $name, $password){
+function insertUser($email, $name, $password){
   $conn = databaseConnection();
   $name = mysqli_real_escape_string($conn, $name);
   $email = mysqli_real_escape_string($conn, $email);
@@ -70,6 +70,11 @@ function setUser($key, $value, $id){
   } finally {
     mysqli_close($conn);
   }
+}
+
+function getAdminStatus($id){
+  $user = findUserById($id);
+  return $user['admin'];
 }
 // ================================== PRODUCTS =======================================
 
@@ -107,7 +112,7 @@ function findProductById($id){
   }
 }
 
-function storeOrder($user_id, $cartContent){
+function insertOrder($user_id, $cartContent){
   $conn = databaseConnection();
 
   try{
@@ -153,5 +158,19 @@ function getTopFive(){
   return $result;
   
 }
+
+function insertProduct($name, $description, $price, $file_name){
+  $conn = databaseConnection();
+  $values = array($name, $price, $description, $file_name);
+  foreach($values as $value){
+    $value = mysqli_real_escape_string($conn, $value);
+  }
+  $sql = "INSERT INTO products(name, description, price, filename) VALUES('$name', '$description', $price, '$file_name')";
+
+  mysqli_query($conn, $sql);
+
+  mysqli_close($conn);
+}
+
 
 ?>

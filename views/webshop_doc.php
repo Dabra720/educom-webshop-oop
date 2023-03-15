@@ -30,7 +30,17 @@ class WebshopDoc extends ProductDoc{
 
   protected function showContent()
   {
+    echo '<div class="row">';
+    echo '<div class="col">';
     echo '<h1>Producten</h1>';
+    echo '</div>';
+    echo '<div class="col">';
+    if($this->model->isAdmin()){
+      echo '<a href="index.php?page=upload" class="submit float-right"><button class="btn btn-primary">Voeg product toe</button></a>'; 
+    }
+    echo '</div>';
+    echo '</div>';
+    
     echo "<div class='row row-cols-1 row-cols-md-2'>";
     foreach($this->model->products as $key => $value){
       $this->showProduct($value);

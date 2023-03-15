@@ -3,11 +3,16 @@ require_once "basic_doc.php";
 
 abstract class FormsDoc extends BasicDoc{
 
-  protected function showFormStart($hasRequiredFields){
+  protected function showFormStart($hasRequiredFields, $upload=false){
     if($hasRequiredFields){
       echo "<span class='text-danger'>* required fields</span>";
     }
-    echo "<form action='index.php' method='POST'>";
+    if($upload){
+      echo "<form action='index.php' method='POST' enctype='multipart/form-data'>";
+    } else {
+      echo "<form action='index.php' method='POST'>";
+    }
+    
     echo "<div class='form-group'>";
   }
   protected function showFormField($field, $label, $type, $model, $required=true, $options=NULL){
@@ -36,6 +41,11 @@ abstract class FormsDoc extends BasicDoc{
         echo "<$type name='$field' class='form-control'>".Util::getArrayVar($this->model->values, $field)."</$type><span class='text-danger'>* ".Util::getArrayVar($this->model->errors, $field)."</span>";
         $this->showRowEnd();
         break;
+      // case 'file':
+      //   $this->showRowStart($label);
+      //   echo "<input name='$field' class='form-control'>".Util::getArrayVar($this->model->values, $field)."</$type><span class='text-danger'>* ".Util::getArrayVar($this->model->errors, $field)."</span>";
+      //   $this->showRowEnd();
+      //   break;
       default:
         $this->showRowStart($label);
         echo "<input type='$type' name='$field' id='$field' value='".Util::getArrayVar($this->model->values, $field)."' class='form-control'><span class='text-danger'>* ".Util::getArrayVar($this->model->errors, $field)."</span>";

@@ -100,9 +100,15 @@ class PageController{
         $this->model->handleActions();
         $this->model->setCartContent();
         break;
-    //   case 'home':
-    //     handleActions();
-    //     break;
+      case 'upload':
+        require_once "models/product_model.php";
+        $this->model = new ProductModel($this->model);
+        $this->model->validateProduct();
+        break;
+      case 'home':
+        require_once "models/product_model.php";
+        $this->model = new ProductModel($this->model);
+        $this->model->handleActions();
     }
   }
 
@@ -160,7 +166,12 @@ class PageController{
         require_once "views/cart_doc.php";
         $view = new CartDoc($this->model);
         break;
+      case 'upload':
+        require_once "views/upload_doc.php";
+        $view = new UploadDoc($this->model);
+        break;
       default:
+      require_once "views/basic_doc.php";
         $view = new BasicDoc($this->model); // 404 Error
     }
     $view->show();

@@ -8,7 +8,9 @@ class PageModel{
   protected $isPost = false;
   public $menu;
   protected $sessionManager;
-  public $loggedIn = false;
+  public $values = array();
+  public $errors = array();
+  // public $loggedIn = false;
   public $valid = false;
 
   public function __construct($copy){
@@ -43,6 +45,11 @@ class PageModel{
 
   public function hasAuthorisation(){
     return $this->sessionManager->isUserLoggedIn();
+  }
+
+  public function isAdmin(){
+    require_once "repository.php";
+    return getAdminStatus($this->sessionManager->getCurrentUser('id'));
   }
 
   public function createMenu(){

@@ -24,7 +24,7 @@ class ProfileDoc extends BasicDoc{
     echo '</tr>';
     echo '<tr>';
     echo '<td><a href="index.php?page=change" class="submit"><button class="btn btn-secondary">Wijzig wachtwoord</button></a></td>';
-    echo '<td><input type="hidden" name="page" value="change"></td>';
+    // echo '<td><input type="hidden" name="page" value="change"></td>';
     echo '</tr>';
     echo '</table>';
   

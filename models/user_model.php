@@ -2,8 +2,8 @@
 require_once "page_model.php";
 
 class UserModel extends PageModel{
-  public $values = array();
-  public $errors = array();
+  // public $values = array();
+  // public $errors = array();
   public $salutations = array("-"=>"invalid", "Dhr"=>"Dhr", "Mvr"=>"Mvr", "Geen aanhef"=>"none");
   public $comm_prefs = array("email"=>"E-Mail", "phone"=>"Telefoon");
   
@@ -99,7 +99,7 @@ class UserModel extends PageModel{
 
   public function storeUser($email, $name, $password){
     require_once "repository.php";
-    saveUser($email, $name, $password);
+    insertUser($email, $name, $password);
   }
 
   // ====================================================== LOGIN ============================================================ 
