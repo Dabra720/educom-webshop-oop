@@ -117,10 +117,15 @@ class ProductModel extends PageModel{
       $this->validateField('message', 'isEmpty');
       $this->validateImage();
       if(empty($this->errors)){
-        $target_dir = "C:/xampp/htdocs/educom-webshop-oop/Images/";
-        $target_file = $target_dir . basename($_FILES["image"]["name"]);
-        $this->uploadImage($target_file);
-        $this->storeProduct($this->values['name'], $this->values['message'], $this->values['price'], $_FILES["image"]["name"]);
+        $this->valid = true;
+        // $target_dir = "C:/xampp/htdocs/educom-webshop-oop/Images/";
+        // $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        // $this->uploadImage($target_file);
+        Util::logDebug("Naam: " . $this->values['name']);
+        Util::logDebug("Beschrijving: " . $this->values['message']);
+        Util::logDebug("Prijs: " . $this->values['price']);
+        Util::logDebug("Filenaam: " . $_FILES["image"]["name"]);
+        // $this->storeProduct($this->values['name'], $this->values['message'], $this->values['price'], $_FILES["image"]["name"]);
       }
     }
   }
@@ -202,11 +207,11 @@ class ProductModel extends PageModel{
     if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
       echo "The file ". htmlspecialchars( basename( $_FILES["image"]["name"])). " has been uploaded.";
     } else {
-      echo "Sorry, there was an error uploading your file.";
+      Util::logDebug("There was an error uploading your file.");
     }
   }
 
-  private function storeProduct($name, $description, $price, $filename){
+  public function storeProduct($name, $description, $price, $filename){
     require_once "repository.php";
     insertProduct($name, $description, $price, $filename);
   }

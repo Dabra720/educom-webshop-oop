@@ -75,7 +75,7 @@ class PageController{
         if($this->model->valid){
           $this->model->updateUser('password', $this->model->values['new_pass']);
           $this->model->setPage('profile');
-        } else {$this->model->setPage('change');}
+        }// else {$this->model->setPage('change');}
         break;
       case 'webshop':
         require_once "models/product_model.php";
@@ -104,6 +104,14 @@ class PageController{
         require_once "models/product_model.php";
         $this->model = new ProductModel($this->model);
         $this->model->validateProduct();
+        if($this->model->valid){
+          $target_dir = "C:/xampp/htdocs/educom-webshop-oop/Images/";
+          $target_file = $target_dir . basename($_FILES["image"]["name"]);
+          $this->model->uploadImage($target_file);
+          $this->model->storeProduct($this->model->values['name'], $this->model->values['message'], $this->model->values['price'], $_FILES["image"]["name"]);
+          $this->model->setPage('webshop');
+          $this->model->getProducts();
+        }
         break;
       case 'home':
         require_once "models/product_model.php";

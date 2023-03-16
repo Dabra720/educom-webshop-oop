@@ -161,15 +161,16 @@ function getTopFive(){
 
 function insertProduct($name, $description, $price, $file_name){
   $conn = databaseConnection();
-  $values = array($name, $price, $description, $file_name);
+  $values = array($name, $description, $price, $file_name);
   foreach($values as $value){
     $value = mysqli_real_escape_string($conn, $value);
   }
+
   $sql = "INSERT INTO products(name, description, price, filename) VALUES('$name', '$description', $price, '$file_name')";
 
   mysqli_query($conn, $sql);
-
   mysqli_close($conn);
+  
 }
 
 

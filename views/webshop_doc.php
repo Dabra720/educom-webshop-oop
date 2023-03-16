@@ -20,6 +20,7 @@ class WebshopDoc extends ProductDoc{
     echo "</div>"; // float-left
     echo "<div class='float-right'>";
     if($this->model->hasAuthorisation()){
+      Util::logDebug("Has authorisation");
       $this->model->addAction('webshop', 'updateCart', 'Update Cart', $value['id'], $value['name']);
     }
     echo "</div>"; // float-right
@@ -41,7 +42,8 @@ class WebshopDoc extends ProductDoc{
     echo '</div>';
     echo '</div>';
     
-    echo "<div class='row row-cols-1 row-cols-md-2'>";
+
+    echo "<div class='row row-cols-1 row-cols-md-2 card-deck'>";
     foreach($this->model->products as $key => $value){
       $this->showProduct($value);
     }

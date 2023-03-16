@@ -29,11 +29,11 @@ class PageModel{
 
   public function getRequestedPage(){     
     $this->isPost = ($_SERVER['REQUEST_METHOD']=="POST"); 
-    if ($this->isPost) 
+    if ($this->isPost)
     { 
         $this->setPage(Util::getPostVar('page','home'));
     } 
-    else 
+    else
     { 
         $this->setPage(Util::getUrlVar('page','home'));
     } 
@@ -49,7 +49,11 @@ class PageModel{
 
   public function isAdmin(){
     require_once "repository.php";
-    return getAdminStatus($this->sessionManager->getCurrentUser('id'));
+    if($this->sessionManager->isUserLoggedIn()){
+      return getAdminStatus($this->sessionManager->getCurrentUser('id'));
+    }else{
+      return false;
+    }
   }
 
   public function createMenu(){
