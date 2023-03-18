@@ -2,67 +2,60 @@
 require_once "page_model.php";
 
 class UserModel extends PageModel{
-  // public $values = array();
-  // public $errors = array();
-  public $salutations = array("-"=>"invalid", "Dhr"=>"Dhr", "Mvr"=>"Mvr", "Geen aanhef"=>"none");
+  private $crud;
+  public $salutations = array("-"=>"", "Dhr"=>"Dhr", "Mvr"=>"Mvr", "Geen aanhef"=>"none");
   public $comm_prefs = array("email"=>"E-Mail", "phone"=>"Telefoon");
   
+  
 
-  public function __construct($pageModel)
+  public function __construct($pageModel, $userCrud)
   {
     PARENT::__construct($pageModel);
+    $this->crud = $userCrud;
+    if($this->sessionManager->isUserLoggedIn()){
+      $this->user = $this->crud->readUserById($this->sessionManager->getCurrentUser('id'));
+    }
   }
 
+  
   // =================================================== PASSWORD CHANGE ========================================================
   public function validatePasswordChange(){
 
-    $old_pass = Util::getPostVar('old_pass');
-    $new_pass = Util::getPostVar('new_pass');
-    $pass_rep = Util::getPostVar('new_pass_rep');
-
-    $user = $this->getUserBy('id', $this->sessionManager->getCurrentUser('id'));
-    if($user){
-      // debug_to_console("ValidateProfile: " . $user['name']);
-      $this->values['old_pass'] = $old_pass;
-      $this->values['new_pass'] = $new_pass;
-      $this->values['new_pass_rep'] = $pass_rep;
-      $this->values['id'] = $user['id'];
-      $this->values['name'] = $user['name'];
-      $this->values['email'] = $user['email'];
-      $this->values['password'] = $user['password'];
-    }
-
-    if($this->isPost){
+      if($this->isPost){
       $this->validateField('old_pass', 'isEmpty');
-      if($old_pass == $user['password']){
+      $this->validateField('new_pass', 'isEmpty');
+      if($this->values['old_pass'] == $this->user->getPassword()){
         $this->validateField('new_pass_rep', 'pass_rep:new_pass');
       } else {
         $this->errors['old_pass'] = "Password is incorrect";
       }
       if(empty($this->errors)){
-        $this->valid = true;
-        $this->values['password'] = $new_pass;
+        // $this->valid = true;
+        $this->user->setPassword($this->values['new_pass']);
+        $this->crud->updateUser($this->user);
+        $this->setPage('profile');
       }
+
     }
   }
 
-  public function getUserBy($search, $value){
-    require_once "repository.php";
-    switch($search){
-      case 'email':
-        $user = findUserByEmail($value);
-        return $user;
-      case 'id':
-        $user = findUserById($value);
-        return $user;
-    }
-    return NULL;
-  }
+  // public function getUserBy($search, $value){
+  //   require_once "repository.php";
+  //   switch($search){
+  //     case 'email':
+  //       $user = findUserByEmail($value);
+  //       return $user;
+  //     case 'id':
+  //       $user = findUserById($value);
+  //       return $user;
+  //   }
+  //   return NULL;
+  // }
 
-  public function updateUser($key, $value){
-    require_once "repository.php";
-    setUser($key, $value, $this->sessionManager->getCurrentUser('id'));
-  }
+  // public function updateUser($key, $value){
+  //   require_once "repository.php";
+  //   setUser($key, $value, $this->sessionManager->getCurrentUser('id'));
+  // }
 
   // ====================================================== REGISTER ============================================================
   public function validateRegister(){
@@ -71,63 +64,73 @@ class UserModel extends PageModel{
       $this->validateField('name', 'nameValid');
       $this->validateField('password', 'isEmpty');
       $this->validateField('pass_rep', 'pass_rep:password');
-
-      try{
+        
         if(!empty($this->values['email'])){
-          if($this->doesEmailExist($this->values['email'])){
+            if($this->crud->readUserByEmail($this->values['email'])){
             $this->errors['email'] = "Already exists";
           } else{
-            if(empty($data['errors'])){
+            if(empty($this->errors)){
               $this->valid = true;
             }
           }
         }
-      } catch (Exception $ex){
-        $this->errors['generic'] = "Er is een technische storing, probeer het later nogmaals.";
-        Util::logDebug("Register failed: " . $ex->getMessage());
+
+      if($this->valid){
+        $user = new User();
+        $user->setName($this->values['name']);
+        $user->setEmail($this->values['email']);
+        $user->setPassword($this->values['password']);
+        // var_dump(get_object_vars($user));
+        $this->crud->createUser($user);
+        // $this->storeUser($this->values['email'], $this->values['name'], $this->values['password']);
+        $this->setPage('login');
       }
     }
     // return $data;
   }
 
-  private function doesEmailExist($email){
-    require_once "repository.php";
-    if(!is_null(findUserByEmail($email))){
-      return true;
-    } else {return false;}
-  }
+  // private function doesEmailExist($email){
+  //   require_once "repository.php";
+  //   if(!is_null($this->crud->readUserByEmail($email))){
+  //     return true;
+  //   } else {return false;}
+  // }
 
-  public function storeUser($email, $name, $password){
-    require_once "repository.php";
-    insertUser($email, $name, $password);
-  }
+  // public function storeUser($email, $name, $password){
+  //   require_once "repository.php";
+  //   insertUser($email, $name, $password);
+  // }
 
   // ====================================================== LOGIN ============================================================ 
   public function validateLogin(){
     if($this->isPost){
       try{
-        $user = $this->authenticateUser();
-        if(is_null($user)){
+        $this->authenticateUser();
+        if(!is_object($this->user)){
           $this->errors['email'] = "Email and/or password is wrong";
           $this->errors['password'] = "Email and/or password is wrong";
         } else{
           $this->valid = true;
-          $this->values['id'] = $user['id'];
-          $this->values['name'] = $user['name'];
+          $this->values['id'] = $this->user->getId();
+          $this->values['name'] = $this->user->getName();
         }
       } catch(Exception $ex){
         $this->errors['generic'] = "Er is een technische storing, probeer het later nogmaals.";
         Util::logDebug("Authentication failed: " . $ex->getMessage());
       }
+      if($this->valid){
+        $this->doLoginUser($this->values);
+        $this->setPage("home");
+      }
     }
   }
 
+  // Als er geen user gevonden wordt is $user geen object
   private function authenticateUser(){
-    require_once "repository.php";
-    $user = findUserByEmail(Util::getPostVar('email'));
-    if(!empty($user)){
-      if($user['password']==Util::getPostVar('password')){
-        return $user;
+    $this->user = $this->crud->readUserByEmail(Util::getPostVar('email'));
+    if(is_object($this->user)){
+      if($this->user->password==Util::getPostVar('password')){
+        return $this->user;
       }
     }
     return NULL;
@@ -139,6 +142,7 @@ class UserModel extends PageModel{
   }
   public function doLogoutUser(){
     $this->sessionManager->doLogoutUser();
+    $this->setPage("home");
   }
 
   // ====================================================== CONTACT ============================================================
@@ -153,7 +157,7 @@ class UserModel extends PageModel{
       $this->validateField('message', 'isEmpty');
 
       if(empty($this->errors)){
-        $this->valid = true;
+        $this->setPage('thanks');
       }
     }
   }
@@ -163,6 +167,7 @@ class UserModel extends PageModel{
     $checkFields = explode(":", $check);
   
     $this->values[$value] = Util::getPostVar($value);
+    Util::logDebug("Validate value: " . $this->values[$value]);
   
     if(empty($this->values[$value])){
       $this->errors[$value] = ucfirst($value) . " is required";
@@ -170,12 +175,10 @@ class UserModel extends PageModel{
       switch($checkFields[0]){
         case 'aanhefValid':
           // Util::logDebug("aanhef: " . $this->values[$value]);
-          if($this->values[$value]!="invalid"){
+          if($this->values[$value]!=""){
             // Util::logDebug($this->salutations);
             if(!in_array($this->values[$value], $this->salutations)){
               $this->errors[$value] = "Not an option";
-            }else{
-              $this->values[$value] = "";
             }
           }else{
             $this->errors[$value] = "Pick an option";

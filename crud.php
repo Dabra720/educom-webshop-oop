@@ -19,32 +19,41 @@ class Crud{
     }
   }
 
-  private function prepareAndBind($sql, $params){
+  // Bind opgegeven values aan de query en execute
+  private function prepareAndBind($sql, $params, $class=NULL){
+    
     $stmt = $this->pdo->prepare($sql);
-    foreach($params as $key=>$value){
-      $stmt->bindValue($key, $value);
+    if($stmt){
+      foreach($params as $key=>$value){
+        $stmt->bindValue($key, $value);
+      }
+
+      if($class){
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $class);
+      }
+
+      $stmt->execute();
+      return $stmt;
     }
-    // $stmt->setFetchMode(PDO::FETCH_OBJ);
-    $stmt->execute();
-    return $stmt;
   }
   
   public function createRow($sql, $params){
+    //De methode createRow geeft de ID van de gecreëerde row terug
     $this->prepareAndBind($sql, $params);
     return $this->pdo->lastInsertId();
   }
 
-  public function readOneRow($sql, $params){
+  public function readOneRow($sql, $params, $class){
     // De methode readOneRow geeft een object of class terug.
-    $stmt = $this->prepareAndBind($sql, $params);
-    $readObject = $stmt->fetch(PDO::FETCH_OBJ);
+    $stmt = $this->prepareAndBind($sql, $params, $class);
+    $readObject = $stmt->fetch();
     return $readObject;
   }
 
-  public function readAllRows($sql, $params){
+  public function readAllRows($sql, $params, $class){
     //De methode readMultipleRows geeft een array van objecten of klassen terug.
-    $stmt = $this->prepareAndBind($sql, $params);
-    $readArray = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $stmt = $this->prepareAndBind($sql, $params, $class);
+    $readArray = $stmt->fetchAll();
     return $readArray;
   }
 

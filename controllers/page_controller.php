@@ -3,9 +3,11 @@ require_once "models/page_model.php";
 
 class PageController{
   private $model;
+  private $modelFactory;
 
-  public function __construct(){
+  public function __construct($modelFactory){
     $this->model = new PageModel(NULL);
+    $this->modelFactory = $modelFactory;
   }
 
   public function handleRequest(){
@@ -25,57 +27,39 @@ class PageController{
     switch ($this->model->page){
       case 'login':
         require_once "models/user_model.php";
-        $this->model = new UserModel($this->model);
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("user");
         $this->model->validateLogin();
-        if($this->model->valid){
-          $this->model->doLoginUser($this->model->values);
-          // $this->model->createMenu();
-          $this->model->setPage("home");
-        }
         break;
       case 'logout':
         require_once "models/user_model.php";
-        $this->model = new UserModel($this->model);
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("user");
         $this->model->doLogoutUser();
-        // $this->model->createMenu();
-        $this->model->setPage("home");
         break;
       case 'contact';
-        require_once "models/user_model.php";
-        $this->model = new UserModel($this->model);
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("user");;
         $this->model->validateContact();
-        if($this->model->valid){
-          $this->model->setPage('thanks');
-        }
         break;
       case 'register':
         require_once "models/user_model.php";
-        $this->model = new UserModel($this->model);
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("user");
         $this->model->validateRegister();
-        if($this->model->valid){
-          $this->model->storeUser($this->model->values['email'], $this->model->values['name'], $this->model->values['password']);
-          $this->model->setPage('login');
-        }
         break;
       case 'profile':
         require_once "models/user_model.php";
-        $this->model = new UserModel($this->model);
-        // $this->model->hasAuthorisation();
-        if($this->model->hasAuthorisation()){// Autorisatie check bouwen in Usermodel.
-          $this->model->validatePasswordChange();
-          $this->model->setPage('profile');
-        } else {
-          $this->model->setPage('login');
-        }
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("user");
+        $this->model->loginCheck();
         break;
       case 'change':
         require_once "models/user_model.php";
-        $this->model = new UserModel($this->model);
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("user");
         $this->model->validatePasswordChange();
-        if($this->model->valid){
-          $this->model->updateUser('password', $this->model->values['new_pass']);
-          $this->model->setPage('profile');
-        }// else {$this->model->setPage('change');}
+        $this->model->loginCheck();
         break;
       case 'webshop':
         require_once "models/product_model.php";
@@ -99,6 +83,7 @@ class PageController{
         $this->model = new ProductModel($this->model);
         $this->model->handleActions();
         $this->model->setCartContent();
+        $this->model->loginCheck();
         break;
       case 'upload':
         require_once "models/product_model.php";

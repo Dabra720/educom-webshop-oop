@@ -10,6 +10,7 @@ class PageModel{
   protected $sessionManager;
   public $values = array();
   public $errors = array();
+  public $user = NULL;
   // public $loggedIn = false;
   public $valid = false;
 
@@ -22,8 +23,9 @@ class PageModel{
       $this->page = $copy->page;
       $this->isPost = $copy->isPost;
       $this->menu = $copy->menu;
-      // $this->errors = $copy->errors;
       $this->sessionManager = $copy->sessionManager;
+      $this->values = $copy->values;
+      $this->errors = $copy->errors;
     }
   }
 
@@ -48,11 +50,16 @@ class PageModel{
   }
 
   public function isAdmin(){
-    require_once "repository.php";
     if($this->sessionManager->isUserLoggedIn()){
-      return getAdminStatus($this->sessionManager->getCurrentUser('id'));
+      return $this->user->getAdmin();
     }else{
       return false;
+    }
+  }
+
+  public function loginCheck(){
+    if(!$this->sessionManager->isUserLoggedIn()){// Autorisatie check bouwen in Usermodel.
+      $this->setPage('login');
     }
   }
 

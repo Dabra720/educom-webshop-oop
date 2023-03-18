@@ -1,4 +1,5 @@
 <?php
+require_once "user.php";
 
 class UserCrud{
   private $crud;
@@ -12,21 +13,26 @@ class UserCrud{
   public function createUser($user){
     $sql = "INSERT INTO users(email, name, password, admin) VALUES(:email, :name, :password, :admin)";
     $params = array(':email'=>$user->getEmail(), ':name'=>$user->getName(), ':password'=>$user->getPassword(), ':admin'=>$user->getAdmin());
-    
+    // Util::logDebug("user Email: " . $user->getEmail());
     $userId = $this->crud->createRow($sql, $params);
     // $user = new User()
     return $userId;
   }
 
   public function readUserByEmail($email){
-
+    $sql = "SELECT * FROM users WHERE email=:email";
+    $params = array(":email"=>$email);
+    $user = $this->crud->readOneRow($sql, $params, 'User');
+    return $user;
   }
 
   public function readUserById($userId){
     $sql = "SELECT * FROM users WHERE id=:id";
     $params = array(":id"=>$userId);
+    $user = $this->crud->readOneRow($sql, $params, 'User');
+    // $user = new User($read->name, $read->email, $read->password, $read->admin, $read->id);
 
-    return $this->crud->readOneRow($sql, $params);
+    return $user;
   }
 
   public function readAllUsers(){

@@ -1,19 +1,15 @@
 <?php
 
 class User{
-  private $id;
+  public $id = NULL;
   public $name;
-  private $email;
-  private $password;
-  private $admin;
+  public $email;
+  public $password;
+  public $admin = false;
   
-
-  public function __construct($name, $email, $password, $admin="false")
+  public function __construct()
   {
-    $this->name = $name;
-    $this->email = $email;
-    $this->password = $password;
-    $this->admin = $admin;
+    
   }
 
   public function getId(){
@@ -30,7 +26,6 @@ class User{
     $this->email = $email;
   }
 
-  // DEZE MOET UITEINDELIJK VERWIJDERD WORDEN!!
   public function getPassword(){
     return $this->password;
   }
