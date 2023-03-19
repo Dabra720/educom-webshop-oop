@@ -2,6 +2,7 @@
 require_once "page_model.php";
 
 class ProductModel extends PageModel{
+  // private $crud;
   public $products = array();
   public $product = array();
   // public $values = array();

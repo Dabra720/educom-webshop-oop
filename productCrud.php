@@ -1,4 +1,5 @@
 <?php
+require_once "product.php";
 
 class ProductCrud{
   private $crud;
@@ -12,7 +13,6 @@ class ProductCrud{
   public function createProduct($product){
     $sql = "INSERT INTO products(name, description, price, filename) VALUES(:name, :description, :price, :filename)";
     $params = array(':name'=>$product->getName(), ':description'=>$product->getDecription(), ':price'=>$product->getPrice(), ':filename'=>$product->getFilename());
-    
     $productId = $this->crud->createRow($sql, $params);
     return $productId;
   }
@@ -20,8 +20,8 @@ class ProductCrud{
   public function readProductById($productId){
     $sql = "SELECT * FROM products WHERE id=:id";
     $params = array(":id"=>$productId);
-
-    return $this->crud->readOneRow($sql, $params);
+    $product = $this->crud->readOneRow($sql, $params);
+    return $product;
   }
 
   public function readAllProducts(){

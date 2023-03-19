@@ -11,6 +11,7 @@ class PageModel{
   public $values = array();
   public $errors = array();
   public $user = NULL;
+  protected $crud;
   // public $loggedIn = false;
   public $valid = false;
 

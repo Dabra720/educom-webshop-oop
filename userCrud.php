@@ -13,9 +13,7 @@ class UserCrud{
   public function createUser($user){
     $sql = "INSERT INTO users(email, name, password, admin) VALUES(:email, :name, :password, :admin)";
     $params = array(':email'=>$user->getEmail(), ':name'=>$user->getName(), ':password'=>$user->getPassword(), ':admin'=>$user->getAdmin());
-    // Util::logDebug("user Email: " . $user->getEmail());
     $userId = $this->crud->createRow($sql, $params);
-    // $user = new User()
     return $userId;
   }
 
@@ -30,8 +28,6 @@ class UserCrud{
     $sql = "SELECT * FROM users WHERE id=:id";
     $params = array(":id"=>$userId);
     $user = $this->crud->readOneRow($sql, $params, 'User');
-    // $user = new User($read->name, $read->email, $read->password, $read->admin, $read->id);
-
     return $user;
   }
 

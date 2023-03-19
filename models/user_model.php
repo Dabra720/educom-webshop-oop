@@ -2,10 +2,9 @@
 require_once "page_model.php";
 
 class UserModel extends PageModel{
-  private $crud;
+  // private $crud;
   public $salutations = array("-"=>"", "Dhr"=>"Dhr", "Mvr"=>"Mvr", "Geen aanhef"=>"none");
   public $comm_prefs = array("email"=>"E-Mail", "phone"=>"Telefoon");
-  
   
 
   public function __construct($pageModel, $userCrud)
@@ -13,10 +12,10 @@ class UserModel extends PageModel{
     PARENT::__construct($pageModel);
     $this->crud = $userCrud;
     if($this->sessionManager->isUserLoggedIn()){
+      // Create logged in user object
       $this->user = $this->crud->readUserById($this->sessionManager->getCurrentUser('id'));
     }
   }
-
   
   // =================================================== PASSWORD CHANGE ========================================================
   public function validatePasswordChange(){
@@ -38,24 +37,6 @@ class UserModel extends PageModel{
 
     }
   }
-
-  // public function getUserBy($search, $value){
-  //   require_once "repository.php";
-  //   switch($search){
-  //     case 'email':
-  //       $user = findUserByEmail($value);
-  //       return $user;
-  //     case 'id':
-  //       $user = findUserById($value);
-  //       return $user;
-  //   }
-  //   return NULL;
-  // }
-
-  // public function updateUser($key, $value){
-  //   require_once "repository.php";
-  //   setUser($key, $value, $this->sessionManager->getCurrentUser('id'));
-  // }
 
   // ====================================================== REGISTER ============================================================
   public function validateRegister(){
@@ -80,9 +61,7 @@ class UserModel extends PageModel{
         $user->setName($this->values['name']);
         $user->setEmail($this->values['email']);
         $user->setPassword($this->values['password']);
-        // var_dump(get_object_vars($user));
         $this->crud->createUser($user);
-        // $this->storeUser($this->values['email'], $this->values['name'], $this->values['password']);
         $this->setPage('login');
       }
     }
@@ -119,7 +98,7 @@ class UserModel extends PageModel{
         Util::logDebug("Authentication failed: " . $ex->getMessage());
       }
       if($this->valid){
-        $this->doLoginUser($this->values);
+        $this->doLoginUser();
         $this->setPage("home");
       }
     }
@@ -127,17 +106,17 @@ class UserModel extends PageModel{
 
   // Als er geen user gevonden wordt is $user geen object
   private function authenticateUser(){
-    $this->user = $this->crud->readUserByEmail(Util::getPostVar('email'));
-    if(is_object($this->user)){
+    $user = $this->crud->readUserByEmail(Util::getPostVar('email'));
+    if(is_object($user)){
       if($this->user->password==Util::getPostVar('password')){
-        return $this->user;
+        $this->user = $user;
       }
     }
     return NULL;
   }
 
   public function doLoginUser(){
-    $this->sessionManager->doLoginUser($this->values);
+    $this->sessionManager->doLoginUser($this->user);
 
   }
   public function doLogoutUser(){

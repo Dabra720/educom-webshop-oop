@@ -56,11 +56,17 @@ class testCrud{
   //   $readObject = $stmt->fetch();
   //   return $readObject;
   // }
+  // public function readOneRow($sql, $params, $class){
+  //   // De methode readOneRow geeft een object of class terug.
+  //   $stmt = $this->prepareAndBind($sql, $params, $class);
+  //   $readObject = $stmt->fetch();
+  //   // var_dump(get_class_vars('User'));
+  //   return $readObject;
+  // }
   public function readOneRow($sql, $params, $class){
     // De methode readOneRow geeft een object of class terug.
     $stmt = $this->prepareAndBind($sql, $params, $class);
     $readObject = $stmt->fetch();
-    // var_dump(get_class_vars('User'));
     return $readObject;
   }
 

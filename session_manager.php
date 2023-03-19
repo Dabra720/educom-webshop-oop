@@ -2,9 +2,9 @@
 
 //=================== USER ========================
 class SessionManager{
-  public function doLoginUser($values){
-  $_SESSION['id'] = $values['id'];
-  $_SESSION['name'] = $values['name'];
+  public function doLoginUser($user){
+  $_SESSION['id'] = $user->getId();
+  $_SESSION['name'] = $user->getName();
   $_SESSION['cart'] = array();
   }
   public function isUserLoggedIn(){

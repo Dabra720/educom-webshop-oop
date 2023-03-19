@@ -19,7 +19,8 @@ class ModelFactory{
         $this->pageModel = new UserModel($this->pageModel, $this->crud);
         break;
       case "product":
-        $this->pageModel = new ProductModel($this->crud);
+        $this->crud = $this->createCrud($name);
+        $this->pageModel = new ProductModel($this->pageModel, $this->crud);
         break;
       default:
         $this->pageModel = new PageModel($this->crud);
