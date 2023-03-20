@@ -2,59 +2,49 @@
 require_once "page_model.php";
 
 class ProductModel extends PageModel{
-  // private $crud;
   public $products = array();
   public $product = array();
-  // public $values = array();
-  // public $topFive = array();
 
-  public function __construct($pageModel)
+  public function __construct($pageModel, $productCrud)
   {
     PARENT::__construct($pageModel);
+    $this->crud = $productCrud;
   }
 
   public function setProduct($id=NULL){
     if(is_null($id)){
       if($this->isPost){
-        $this->product = $this->getProductBy('id', Util::getPostVar('id'));
+        $this->product = $this->crud->readProductById(Util::getPostVar('id'));
+        // $this->product = $this->getProductBy('id', Util::getPostVar('id'));
       } else {
-        $this->product = $this->getProductBy('id', Util::getUrlVar('id'));
+        $this->product = $this->crud->readProductById(Util::getUrlVar('id'));
       }
     } else{
-      $this->product = $this->getProductBy('id', $id);
+      $this->product = $this->crud->readProductById($id);
     }
     
   }
 
-  public function getProducts(){
-    require_once "repository.php";
-    $this->products = selectProducts();
-  }
-
-  public function getProductBy($search, $value){
-    require_once "repository.php";
-    switch($search){
-      case 'id':
-        $product = findProductById($value);
-        return $product;
-    }
-    return NULL;
+  public function setProducts(){
+    $this->products = $this->crud->readAllProducts();
   }
 
   public function setTopFive(){
-    require_once "repository.php";
-    $this->products = getTopFive();
+    $this->products = $this->crud->readTopFive();
   }
 
   public function setCartContent(){
-    $this->products = $this->sessionManager->getCartContent();
+    $cartContent = $this->sessionManager->getCartContent();
+    foreach($cartContent as $key=>$value){
+      $product = $this->crud->readProductById($key);
+      $product->quantity = $value;
+      array_push($this->products, $product); // Voeg de product objecten toe aan de products array
+    }
   }
 
   // Om het toevoegen van een knop makkelijker te maken
   public function addAction($nextpage, $action, $buttonTxt, $productId = NULL, $name = NULL){
     $amount = $this->sessionManager->getAmountFromCart($productId);
-    // debug_to_console('Amount: ' . $amount);
-    // debug_to_console('Id: ' . $productId);
     if ($this->sessionManager->isUserLoggedIn()){
       echo "<form class='form-inline' action='index.php' method='post'>";
       echo "<div class='form-group'>";
@@ -90,24 +80,21 @@ class ProductModel extends PageModel{
         $user_id = $this->sessionManager->getCurrentUser("id");
         $cartContent = $this->sessionManager->getCartContent();
         if($cartContent){
-          $this->saveOrder($user_id, $cartContent);
+          // $this->saveOrder($user_id, $cartContent);
+          try{
+            $this->crud->createOrder($user_id, $cartContent);
+            $this->sessionManager->emptyCart();
+          } catch(PDOException $e){
+            $this->errors['generic'] = "Processing order went wrong..";
+          }
         }
-        break;
-      case 'upload':
-
         break;
     }
   }
 
-  private function saveOrder($userId, $cartContent){
-    require_once "repository.php";
-    try{
-      insertOrder($userId, $cartContent);
-      $this->sessionManager->emptyCart();
-    } catch(Exception $e){
-      $this->errors['generic'] = "Processing order went wrong..";
-    }
-    
+  public function deleteProduct(){
+    $this->crud->deleteProduct(Util::getUrlVar('id'));
+    // Zou ook nog de opgeslagen image moeten verwijderen..
   }
 
   // ============================================ Product Upload ==================================================
@@ -118,15 +105,12 @@ class ProductModel extends PageModel{
       $this->validateField('message', 'isEmpty');
       $this->validateImage();
       if(empty($this->errors)){
-        $this->valid = true;
-        // $target_dir = "C:/xampp/htdocs/educom-webshop-oop/Images/";
-        // $target_file = $target_dir . basename($_FILES["image"]["name"]);
-        // $this->uploadImage($target_file);
-        Util::logDebug("Naam: " . $this->values['name']);
-        Util::logDebug("Beschrijving: " . $this->values['message']);
-        Util::logDebug("Prijs: " . $this->values['price']);
-        Util::logDebug("Filenaam: " . $_FILES["image"]["name"]);
-        // $this->storeProduct($this->values['name'], $this->values['message'], $this->values['price'], $_FILES["image"]["name"]);
+        $target_dir = "C:/xampp/htdocs/educom-webshop-oop/Images/";
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        $this->storeProduct($this->values['name'], $this->values['message'], $this->values['price'], $_FILES["image"]["name"]);
+        $this->uploadImage($target_file);
+        $this->setPage('webshop');
+        $this->setProducts();
       }
     }
   }
@@ -194,14 +178,21 @@ class ProductModel extends PageModel{
 
     if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
       echo "The file ". htmlspecialchars( basename( $_FILES["image"]["name"])). " has been uploaded.";
+      return true;
     } else {
       Util::logDebug("There was an error uploading your file.");
+      return false;
     }
   }
 
   public function storeProduct($name, $description, $price, $filename){
-    require_once "repository.php";
-    insertProduct($name, $description, $price, $filename);
+    $product = new Product();
+    $product->setName($name);
+    $product->setDescription($description);
+    $product->setPrice($price);
+    $product->setFilename($filename);
+
+    $this->crud->createProduct($product);
   }
 }
 

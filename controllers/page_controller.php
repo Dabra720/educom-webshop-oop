@@ -26,13 +26,11 @@ class PageController{
     
     switch ($this->model->page){
       case 'login':
-        require_once "models/user_model.php";
         $this->modelFactory->pageModel = $this->model;
         $this->model = $this->modelFactory->createModel("user");
         $this->model->validateLogin();
         break;
       case 'logout':
-        require_once "models/user_model.php";
         $this->modelFactory->pageModel = $this->model;
         $this->model = $this->modelFactory->createModel("user");
         $this->model->doLogoutUser();
@@ -43,64 +41,61 @@ class PageController{
         $this->model->validateContact();
         break;
       case 'register':
-        require_once "models/user_model.php";
         $this->modelFactory->pageModel = $this->model;
         $this->model = $this->modelFactory->createModel("user");
         $this->model->validateRegister();
         break;
       case 'profile':
-        require_once "models/user_model.php";
         $this->modelFactory->pageModel = $this->model;
         $this->model = $this->modelFactory->createModel("user");
         $this->model->loginCheck();
         break;
       case 'change':
-        require_once "models/user_model.php";
         $this->modelFactory->pageModel = $this->model;
         $this->model = $this->modelFactory->createModel("user");
         $this->model->validatePasswordChange();
         $this->model->loginCheck();
         break;
       case 'webshop':
-        require_once "models/product_model.php";
-        $this->model = new ProductModel($this->model);
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("product");
         $this->model->handleActions();
-        $this->model->getProducts();
+        $this->model->setProducts();
         break;
       case 'topFive':
-        require_once "models/product_model.php";
-        $this->model = new ProductModel($this->model);
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("product");
         $this->model->setTopFive();
         break;
       case 'detail':
-        require_once "models/product_model.php";
-        $this->model = new ProductModel($this->model);
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("product");
         $this->model->handleActions();
         $this->model->setProduct();
         break;
       case 'cart':
-        require_once "models/product_model.php";
-        $this->model = new ProductModel($this->model);
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("product");
         $this->model->handleActions();
         $this->model->setCartContent();
         $this->model->loginCheck();
         break;
       case 'upload':
-        require_once "models/product_model.php";
-        $this->model = new ProductModel($this->model);
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("product");
         $this->model->validateProduct();
-        if($this->model->valid){
-          $target_dir = "C:/xampp/htdocs/educom-webshop-oop/Images/";
-          $target_file = $target_dir . basename($_FILES["image"]["name"]);
-          $this->model->uploadImage($target_file);
-          $this->model->storeProduct($this->model->values['name'], $this->model->values['message'], $this->model->values['price'], $_FILES["image"]["name"]);
-          $this->model->setPage('webshop');
-          $this->model->getProducts();
-        }
         break;
+      case 'delete':
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("product");
+        if($this->model->isAdmin()){
+          $this->model->deleteProduct();
+          $this->model->setPage('webshop');
+          $this->model->setProducts();
+        }
       case 'home':
-        require_once "models/product_model.php";
-        $this->model = new ProductModel($this->model);
+        $this->modelFactory->pageModel = $this->model;
+        $this->model = $this->modelFactory->createModel("product");
         $this->model->handleActions();
     }
   }

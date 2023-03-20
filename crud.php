@@ -28,7 +28,7 @@ class Crud{
         $stmt->bindValue($key, $value);
       }
 
-      if($class){
+      if($class){ // Voor het ophalen van class objecten(User/Product)
         $stmt->setFetchMode(PDO::FETCH_CLASS, $class);
       }
 
@@ -50,7 +50,7 @@ class Crud{
     return $readObject;
   }
 
-  public function readAllRows($sql, $params, $class){
+  public function readMultipleRows($sql, $params, $class){
     //De methode readMultipleRows geeft een array van objecten of klassen terug.
     $stmt = $this->prepareAndBind($sql, $params, $class);
     $readArray = $stmt->fetchAll();

@@ -70,7 +70,7 @@ class testCrud{
     return $readObject;
   }
 
-  public function readAllRows($sql, $params, $class){
+  public function readMultipleRows($sql, $params, $class){
     //De methode readMultipleRows geeft een array van objecten of klassen terug.
     $stmt = $this->prepareAndBind($sql, $params, $class);
     $readArray = $stmt->fetchAll();

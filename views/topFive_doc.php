@@ -3,15 +3,15 @@ require_once "product_doc.php";
 
 class TopFiveDoc extends ProductDoc{
 
-  private function showTopFiveRow($value){
+  private function showTopFiveRow($product){
     echo '<tr>';
     echo '<td>';
-    echo '<a href="index.php?page=detail&id='. $value['id'] .'" class="cart_link">';
-    echo '<img src="../educom-webshop-oop/Images/'.$value['filename'].'" class="rounded-circle" style="height:50px; width:auto;">';
+    echo '<a href="index.php?page=detail&id='. $product->getId() .'" class="cart_link">';
+    echo '<img src="../educom-webshop-oop/Images/'.$product->getFilename().'" class="rounded-circle" style="height:50px; width:auto;">';
     echo '</a></td>';
-    echo '<td><a href="index.php?page=detail&id='. $value['id'] .'" class="cart_link">'. $value['name'] .'</a></td>';
-    echo '<td><a href="index.php?page=detail&id='. $value['id'] .'" class="cart_link">'. $value['quantity'] .'</a></td>';
-    echo '<td><a href="index.php?page=detail&id='. $value['id'] .'" class="cart_link">&#8364; '. number_format($value['price'], 2, ',', '.') .'</a></td>';
+    echo '<td><a href="index.php?page=detail&id='. $product->getId() .'" class="cart_link">'. $product->getName() .'</a></td>';
+    echo '<td><a href="index.php?page=detail&id='. $product->getId() .'" class="cart_link">'. $product->quantity .'</a></td>';
+    echo '<td><a href="index.php?page=detail&id='. $product->getId() .'" class="cart_link">&#8364; '. number_format($product->getPrice(), 2, ',', '.') .'</a></td>';
     echo '</tr>';
   }
 
@@ -28,10 +28,10 @@ class TopFiveDoc extends ProductDoc{
     echo '</tr>';
     echo '</thead>';
     echo '<tbody>';
-    foreach($this->model->products as $key => $value){
+    foreach($this->model->products as $product){
       // debug_to_console("key: " . $key);
       // debug_to_console("value: " . $value['id']);
-      $this->showTopFiveRow($value);
+      $this->showTopFiveRow($product);
     }
     echo '</tbody>';
     echo '</table>';

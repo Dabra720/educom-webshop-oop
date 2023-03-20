@@ -52,14 +52,16 @@ class PageModel{
 
   public function isAdmin(){
     if($this->sessionManager->isUserLoggedIn()){
-      return $this->user->getAdmin();
+      // return $this->user->getAdmin();
+      return $this->sessionManager->getCurrentUser('admin');
     }else{
       return false;
     }
   }
 
+  // Voor elke pagina die alleen voor logged in users is.
   public function loginCheck(){
-    if(!$this->sessionManager->isUserLoggedIn()){// Autorisatie check bouwen in Usermodel.
+    if(!$this->sessionManager->isUserLoggedIn()){
       $this->setPage('login');
     }
   }

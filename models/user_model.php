@@ -29,12 +29,10 @@ class UserModel extends PageModel{
         $this->errors['old_pass'] = "Password is incorrect";
       }
       if(empty($this->errors)){
-        // $this->valid = true;
         $this->user->setPassword($this->values['new_pass']);
         $this->crud->updateUser($this->user);
         $this->setPage('profile');
       }
-
     }
   }
 
@@ -65,20 +63,7 @@ class UserModel extends PageModel{
         $this->setPage('login');
       }
     }
-    // return $data;
   }
-
-  // private function doesEmailExist($email){
-  //   require_once "repository.php";
-  //   if(!is_null($this->crud->readUserByEmail($email))){
-  //     return true;
-  //   } else {return false;}
-  // }
-
-  // public function storeUser($email, $name, $password){
-  //   require_once "repository.php";
-  //   insertUser($email, $name, $password);
-  // }
 
   // ====================================================== LOGIN ============================================================ 
   public function validateLogin(){
@@ -108,7 +93,7 @@ class UserModel extends PageModel{
   private function authenticateUser(){
     $user = $this->crud->readUserByEmail(Util::getPostVar('email'));
     if(is_object($user)){
-      if($this->user->password==Util::getPostVar('password')){
+      if($user->password==Util::getPostVar('password')){
         $this->user = $user;
       }
     }

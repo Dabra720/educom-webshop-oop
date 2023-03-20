@@ -6,15 +6,11 @@ class Product{
   private $description;
   private $price;
   private $filename;
+  public $quantity;
   
 
-  public function __construct($name, $description, $price, $filename, $id=NULL)
+  public function __construct()
   {
-    $this->id = $id;
-    $this->name = $name;
-    $this->description = $description;
-    $this->filename = $filename;
-    $this->price = $price;
 
   }
 

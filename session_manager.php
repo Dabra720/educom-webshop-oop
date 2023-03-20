@@ -5,6 +5,7 @@ class SessionManager{
   public function doLoginUser($user){
   $_SESSION['id'] = $user->getId();
   $_SESSION['name'] = $user->getName();
+  $_SESSION['admin'] = $user->getAdmin(); // Om admin status te kunnen checken
   $_SESSION['cart'] = array();
   }
   public function isUserLoggedIn(){
@@ -18,6 +19,8 @@ class SessionManager{
         return $_SESSION['name'];
       case 'id':
         return $_SESSION['id'];
+      case 'admin':
+        return $_SESSION['admin'];
     }
   }
   public function doLogoutUser(){
