@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 require 'connectDB.php';
 
 function findUserByEmail($email){
@@ -174,4 +174,4 @@ function insertProduct($name, $description, $price, $file_name){
 }
 
 
-?>
+?> -->

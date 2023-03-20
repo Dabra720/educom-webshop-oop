@@ -15,12 +15,16 @@ class WebshopDoc extends ProductDoc{
     echo "</div>"; // card-body
     echo "</a>";
     echo "<div class='card-footer'>";
+    echo '<div><span class="star">*</span>
+    <span class="star">*</span>
+    <span class="star">*</span>
+    <span class="star">*</span>
+    <span class="star">*</span></div>';
     echo "<div class='float-left'>";
     echo "<h3>&#8364; ".number_format($product->getPrice(),2,',','.')."</h3>"; 
     echo "</div>"; // float-left
     echo "<div class='float-right'>";
     if($this->model->hasAuthorisation()){
-      Util::logDebug("Has authorisation");
       $this->model->addAction('webshop', 'updateCart', 'Update Cart', $product->getId(), $product->getName());
     }
     echo "</div>"; // float-right

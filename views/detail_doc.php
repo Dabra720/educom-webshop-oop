@@ -5,9 +5,14 @@ class DetailDoc extends ProductDoc{
 
   protected function showContent()
   {
+    echo '<span class="star">*</span>
+    <span class="star">*</span>
+    <span class="star">*</span>
+    <span class="star">*</span>
+    <span class="star">*</span>';
     echo '<div class="product_detail">';
     echo '<div class="product_image">';
-    echo '<img src="../educom-webshop-oop/Images/'.$this->model->product->getFilename().'" style="width:80%;height:100%">';
+    echo '<img src="../educom-webshop-oop/Images/'.$this->model->product->getFilename().'" style="width:48%;height:60%;margin:auto;display:box;">';
     echo '</div>'; // product_image
     echo '<div class="product_title">';
     echo $this->model->product->getName();

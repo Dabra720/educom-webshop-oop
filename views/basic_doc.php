@@ -21,6 +21,23 @@ class BasicDoc extends HtmlDoc{
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>';
     echo '<!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>';
+    echo '<link rel="stylesheet" href="css/style.css">';
+  }
+  private function showJavascript(){
+    //<script src="js/jquery.js"></script>
+    echo '<script>
+      $(document).ready( function() {
+
+          $(".star").click( function() {
+              const value = $(this).attr("data-value")
+              
+              if(itemValue = $(elem).attr("data-value")
+                $(elem).addClass("red")
+              console.log("Value: ${ value }")
+              $(this).addClass("red")
+          })
+      })    
+    </script>';
   }
   private function showHeader(){
     echo '<header></header>';
@@ -63,6 +80,7 @@ class BasicDoc extends HtmlDoc{
   protected function showHeadContent(){
     $this->showTitle();
     $this->showCSSLinks();
+    $this->showJavascript();
   }
 
   protected function showBodyContent(){

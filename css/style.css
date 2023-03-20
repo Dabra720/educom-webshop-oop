@@ -1,0 +1,14 @@
+
+.star {
+  font-size: 30px;
+  color: #000;
+  cursor: pointer;
+  width: 50px;
+}
+
+.star:hover {
+  color: #F00;
+}
+.red {
+  color: #F00;
+}
