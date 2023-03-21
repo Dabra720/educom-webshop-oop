@@ -31,7 +31,7 @@ class BasicDoc extends HtmlDoc{
           $(".star").click( function() {
               const value = $(this).attr("data-value")
               
-              if(itemValue = $(elem).attr("data-value")
+              if(itemValue = $(elem).attr("data-value"))
                 $(elem).addClass("red")
               console.log("Value: ${ value }")
               $(this).addClass("red")

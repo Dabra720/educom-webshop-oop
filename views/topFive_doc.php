@@ -3,7 +3,7 @@ require_once "product_doc.php";
 
 class TopFiveDoc extends ProductDoc{
 
-  private function showTopFiveRow($product){
+  private function showRow($product){
     echo '<tr>';
     echo '<td>';
     echo '<a href="index.php?page=detail&id='. $product->getId() .'" class="cart_link">';
@@ -31,7 +31,7 @@ class TopFiveDoc extends ProductDoc{
     foreach($this->model->products as $product){
       // debug_to_console("key: " . $key);
       // debug_to_console("value: " . $value['id']);
-      $this->showTopFiveRow($product);
+      $this->showRow($product);
     }
     echo '</tbody>';
     echo '</table>';

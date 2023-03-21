@@ -37,7 +37,7 @@ class CartDoc extends ProductDoc{
       echo "<div class='col'>";
       echo "<a href='index.php?page=detail&id=".$product->getId()."' class='stretched-link text-decoration-none'>&#8364; ".number_format($product->getPrice(),2,',','.')."</a></div>";
       echo "<div class='col'>"; 
-      $this->model->addAction('cart', 'updateCart', 'Wijzig', $product->getId()); 
+      $this->addAction('cart', 'updateCart', 'Wijzig', $product->getId()); 
       echo "</div>";
       echo "</div>";
       
@@ -51,7 +51,7 @@ class CartDoc extends ProductDoc{
     echo "<p>&#8364; ".number_format($total,2,',','.')."</p>";
     echo "</div>";
     echo "<div class='col pt-4'>";
-    $this->model->addAction('home', 'order', 'Afrekenen');
+    $this->addAction('home', 'order', 'Afrekenen');
     echo "</div>";
     echo "</div>";
   }

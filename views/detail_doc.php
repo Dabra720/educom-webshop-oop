@@ -26,7 +26,7 @@ class DetailDoc extends ProductDoc{
     echo '<div class="row">';
     if($this->model->hasAuthorisation()){    
       echo '<div class="col">';
-      $this->model->addAction('detail', 'updateCart', 'Update cart', $this->model->product->getId(), $this->model->product->getName());
+      $this->addAction('detail', 'updateCart', 'Update cart', $this->model->product->getId(), $this->model->product->getName());
       echo '</div>';
     }
     if($this->model->isAdmin()){

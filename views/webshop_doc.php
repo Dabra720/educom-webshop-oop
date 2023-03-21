@@ -25,7 +25,7 @@ class WebshopDoc extends ProductDoc{
     echo "</div>"; // float-left
     echo "<div class='float-right'>";
     if($this->model->hasAuthorisation()){
-      $this->model->addAction('webshop', 'updateCart', 'Update Cart', $product->getId(), $product->getName());
+      $this->addAction('webshop', 'updateCart', 'Update Cart', $product->getId(), $product->getName());
     }
     echo "</div>"; // float-right
     echo "</div>"; // card-footer
