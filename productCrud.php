@@ -71,6 +71,7 @@ class ProductCrud{
   // }
 
   public function createOrder($user_id, $cartContent){
+    // Rollback inbouwen, -> Autocommit uit??
     $sql = "INSERT INTO invoice (date, user_id) VALUE(CURRENT_DATE(), :id)";
     $params = array(':id'=>$user_id);
 

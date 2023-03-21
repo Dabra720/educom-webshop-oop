@@ -39,8 +39,8 @@ class UserModel extends PageModel{
   // ====================================================== REGISTER ============================================================
   public function validateRegister(){
     if($this->isPost){
-      $this->validateField('email', 'emailValid');
       $this->validateField('name', 'nameValid');
+      $this->validateField('email', 'emailValid');
       $this->validateField('password', 'isEmpty');
       $this->validateField('pass_rep', 'pass_rep:password');
         
