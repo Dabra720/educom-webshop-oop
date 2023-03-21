@@ -31,11 +31,11 @@ class UserCrud{
     return $user;
   }
 
-  public function readAllUsers(){
-    $sql = "SELECT * FROM users";
-    $params = array();
-    return $this->crud->readAllRows($sql, $params);
-  }
+  // public function readAllUsers(){
+  //   $sql = "SELECT * FROM users";
+  //   $params = array();
+  //   return $this->crud->readMultipleRows($sql, $params);
+  // }
 
   public function updateUser($user){
     $sql = "UPDATE users SET name=:name, email=:email, password=:password, admin=:admin WHERE id=:id";
@@ -44,12 +44,12 @@ class UserCrud{
     $this->crud->updateRow($sql, $params);
   }
 
-  public function deleteUser($userId){
-    $sql = "DELETE FROM users WHERE id=:id";
-    $params = array(":id"=>$userId);
+  // public function deleteUser($userId){
+  //   $sql = "DELETE FROM users WHERE id=:id";
+  //   $params = array(":id"=>$userId);
 
-    $this->crud->deleteRow($sql, $params);
-  }
+  //   $this->crud->deleteRow($sql, $params);
+  // }
 }
 
 ?>

@@ -58,11 +58,11 @@ class Crud{
   }
 
   public function updateRow($sql, $params){
-    $stmt = $this->prepareAndBind($sql, $params);
+    $this->prepareAndBind($sql, $params);
   }
 
   public function deleteRow($sql, $params){
-    $stmt = $this->prepareAndBind($sql, $params);
+    $this->prepareAndBind($sql, $params);
   }
   
 

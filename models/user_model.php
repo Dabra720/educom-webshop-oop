@@ -3,7 +3,7 @@ require_once "page_model.php";
 
 class UserModel extends PageModel{
   // private $crud;
-  public $salutations = array("-"=>"", "Dhr"=>"Dhr", "Mvr"=>"Mvr", "Geen aanhef"=>"none");
+  public $salutations = array("-"=>"", "Dhr"=>"Dhr", "Mvr"=>"Mvr");
   public $comm_prefs = array("email"=>"E-Mail", "phone"=>"Telefoon");
   
 
@@ -138,15 +138,9 @@ class UserModel extends PageModel{
     } else {
       switch($checkFields[0]){
         case 'aanhefValid':
-          // Util::logDebug("aanhef: " . $this->values[$value]);
-          if($this->values[$value]!=""){
-            // Util::logDebug($this->salutations);
             if(!in_array($this->values[$value], $this->salutations)){
               $this->errors[$value] = "Not an option";
             }
-          }else{
-            $this->errors[$value] = "Pick an option";
-          }
           break;
         case 'nameValid':
           // check if name only contains letters and whitespace
