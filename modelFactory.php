@@ -1,8 +1,8 @@
 <?php
 require_once "models/user_model.php";
 require_once "models/product_model.php";
-require_once "userCrud.php";
-require_once "productCrud.php";
+require_once "cruds/userCrud.php";
+require_once "cruds/productCrud.php";
 
 class ModelFactory{
   private $crud;

@@ -42,6 +42,8 @@ class ProductCrud{
     $params = array(":id"=>$productId);
 
     $this->crud->deleteRow($sql, $params);
+
+    // Deze functie moet nog iets krijgen om de image uit de map te verwijderen
   }
 
   public function readTopFive(){
