@@ -36,6 +36,9 @@ class ModelFactory{
       case "product":
         $this->crud = new ProductCrud($this->crud);
         break;
+      case "rating":
+        $this->crud = new RatingCrud($this->crud);
+        break;
     }
     return $this->crud;
   }

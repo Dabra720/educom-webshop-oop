@@ -30,6 +30,8 @@ class Crud{
 
       if($class){ // Voor het ophalen van class objecten(User/Product)
         $stmt->setFetchMode(PDO::FETCH_CLASS, $class);
+      } else {
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
       }
 
       $stmt->execute();

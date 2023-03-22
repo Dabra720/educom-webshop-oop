@@ -1,4 +1,5 @@
-<?php ?>
+<?php 
+echo '
 <!DOCTYPE html>
 <html lang="en">
   <head> 
@@ -10,40 +11,36 @@
       crossorigin="anonymous">
     </script>
     <script>
-      
-    </script>
-    <script>
       $(document).ready( function() {
 
         $(".star").click( function() {
-          const value = $(this).attr('data-value')
+          const value = $(this).attr(\'data-value\')
 
           $(".star").removeClass("red");
 
           /// Paint it Red!
-          $('.star').each( (index, elem) => {
-              const itemValue = $(elem).attr('data-value')
+          $(".star").each( (index, elem) => {
+              const itemValue = $(elem).attr("data-value")
               if(itemValue <= value) {
-                $(elem).addClass('red')
+                $(elem).addClass("red")
               }
             })
             ///
 
             $.ajax({
-              url: "https://api.dev-master.ninja/js/rating",
+              // url: "https://api.dev-master.ninja/js/rating",
+              url: "../views/ajax_doc.php",
               method: "POST",
               data: { rating: value },
               success: function(result) { 
                 // Your code goes here!
-                alert("Succes! Result: " + result.result)
-                console.log("Succes! Result: " + result.rating)
+                console.log(result)
+                console.log("Result: " + result.result)
+                console.log("Rating: " + result.rating)
               }
             })
         })
-        
-
       })
-
       
     </script>
   </head>
@@ -57,4 +54,8 @@
 
   </body>
 </html>
+';
 
+
+
+?>

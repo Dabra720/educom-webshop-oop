@@ -5,6 +5,7 @@ class DetailDoc extends ProductDoc{
 
   protected function showContent()
   {
+    Util::logDebug("Webshop Created.");
     echo '<span class="star">*</span>
     <span class="star">*</span>
     <span class="star">*</span>

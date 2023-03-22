@@ -4,6 +4,7 @@ require_once "models/page_model.php";
 class PageController{
   private $model;
   private $modelFactory;
+  private $actionController;
 
   public function __construct($modelFactory){
     $this->model = new PageModel(NULL);
@@ -12,6 +13,7 @@ class PageController{
 
   public function handleRequest(){
     $this->getRequest();
+    $this->processAction(); // <-----------
     $this->processRequest();
     $this->showResponsePage();
   }
@@ -22,6 +24,18 @@ class PageController{
   }
 
   // Business flow code
+  private function processAction(){ 
+    $action = $this->model->getRequestedAction();
+    switch($action){
+      case "ajax":
+        $this->actionController = new AjaxController($this->modelFactory->createCrud('rating')); // <-----------
+        $this->actionController->handleAction();
+        break;
+      default:
+
+    }
+  }
+
   private function processRequest(){
     
     switch ($this->model->page){
@@ -72,6 +86,7 @@ class PageController{
         $this->model = $this->modelFactory->createModel("product");
         $this->model->handleActions();
         $this->model->setProduct();
+        $this->processAction(); // <-----------
         break;
       case 'cart':
         $this->modelFactory->pageModel = $this->model;
@@ -93,6 +108,7 @@ class PageController{
           $this->model->setPage('webshop');
           $this->model->setProducts();
         }
+        break;
       case 'home':
         $this->modelFactory->pageModel = $this->model;
         $this->model = $this->modelFactory->createModel("product");

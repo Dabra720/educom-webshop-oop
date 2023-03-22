@@ -12,8 +12,6 @@ class PageModel{
   public $errors = array();
   public $user = NULL;
   protected $crud;
-  // public $loggedIn = false;
-  public $valid = false;
 
   public function __construct($copy){
     if(empty($copy)){
@@ -34,13 +32,24 @@ class PageModel{
     $this->isPost = ($_SERVER['REQUEST_METHOD']=="POST"); 
     if ($this->isPost)
     { 
-        $this->setPage(Util::getPostVar('page','home'));
+      $this->setPage(Util::getPostVar('page','home'));
     } 
     else
     { 
-        $this->setPage(Util::getUrlVar('page','home'));
+      $this->setPage(Util::getUrlVar('page','home'));
     } 
-  } 
+  }
+
+  public function getRequestedAction(){
+    if ($this->isPost)
+    { 
+      return (Util::getPostVar('action'));
+    } 
+    else
+    { 
+      return (Util::getUrlVar('action'));
+    } 
+  }
 
   public function setPage($newPage){
     $this->page = $newPage;
