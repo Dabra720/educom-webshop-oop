@@ -29,7 +29,8 @@ class BasicDoc extends HtmlDoc{
   }
   private function showJavascript(){
     if(!empty($this->jsFile)){
-      echo "<script src='$this->jsFile'></script>";
+      echo "<script src='js/jquery.js'></script>";
+      echo "<script src='js/$this->jsFile'></script>";
     }
   }
   private function showHeader(){

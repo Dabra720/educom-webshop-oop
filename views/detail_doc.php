@@ -6,11 +6,11 @@ class DetailDoc extends ProductDoc{
   protected function showContent()
   {
     Util::logDebug("Webshop Created.");
-    echo '<span class="star">*</span>
-    <span class="star">*</span>
-    <span class="star">*</span>
-    <span class="star">*</span>
-    <span class="star">*</span>';
+    echo '<span class="star" data-value="1">*</span>
+    <span class="star" data-value="2">*</span>
+    <span class="star" data-value="3">*</span>
+    <span class="star" data-value="4">*</span>
+    <span class="star" data-value="5">*</span>';
     echo '<div class="product_detail">';
     echo '<div class="product_image">';
     echo '<img src="../educom-webshop-oop/Images/'.$this->model->product->getFilename().'" style="width:48%;height:60%;margin:auto;display:box;">';

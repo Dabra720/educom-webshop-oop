@@ -3,6 +3,7 @@ require_once "models/user_model.php";
 require_once "models/product_model.php";
 require_once "cruds/userCrud.php";
 require_once "cruds/productCrud.php";
+require_once "cruds/ratingCrud.php";
 
 class ModelFactory{
   private $crud;

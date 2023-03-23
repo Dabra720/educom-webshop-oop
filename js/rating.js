@@ -23,13 +23,13 @@ $(document).ready( function() {
 
       $.ajax({
         // url: "https://api.dev-master.ninja/js/rating",
-        url: "../views/ajax_doc.php",
+        url: "index.php",
         method: "POST",
-        data: { rating: value },
+        data: { action: 'ajax', function: 'getRating', rating: value },
         success: function(result) { 
           // Your code goes here!
-          console.log(result)
-          console.log("Result: " + result.result)
+          console.log("Result: " + result)
+          console.log("ID: " + result.id)
           console.log("Rating: " + result.rating)
         }
       })

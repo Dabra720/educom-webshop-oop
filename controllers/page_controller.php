@@ -28,6 +28,7 @@ class PageController{
     $action = $this->model->getRequestedAction();
     switch($action){
       case "ajax":
+        require_once "ajax_controller.php";
         $this->actionController = new AjaxController($this->modelFactory->createCrud('rating')); // <-----------
         $this->actionController->handleAction();
         break;

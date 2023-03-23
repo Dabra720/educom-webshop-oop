@@ -16,11 +16,12 @@ class AjaxController{
   }
 
   public function handleAction(){
-    $action = Util::getUrlVar('function');
+    // $action = Util::getUrlVar('function');
+    $action = Util::getPostVar('function');
     switch ($action){
       case "setRating":
         $ajax = new AjaxDoc();
-        $ajax->getRating(4, 2);
+        $ajax->getRating(Util::getPostVar('rating'), 2);
         break;
       case "getRating":
 
