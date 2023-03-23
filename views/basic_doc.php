@@ -3,6 +3,7 @@ require_once "html_doc.php";
 
 class BasicDoc extends HtmlDoc{
   protected $model;
+  private $jsFile = "";
 
   public function __construct($pageModel)
   {
@@ -23,47 +24,13 @@ class BasicDoc extends HtmlDoc{
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>';
     echo '<link rel="stylesheet" href="css/style.css">';
   }
+  public function setJsFile($jsFile){
+    $this->jsFile = $jsFile;
+  }
   private function showJavascript(){
-    //<script src="js/jquery.js"></script>
-    echo '
-    <script 
-      src="https://code.jquery.com/jquery-3.6.4.js" 
-      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" 
-      crossorigin="anonymous">
-    </script>
-    <script>
-    $(document).ready( function() {
-
-      $(".star").click( function() {
-        const value = $(this).attr(\'data-value\')
-
-        $(".star").removeClass("red");
-
-        /// Paint it Red!
-        $(".star").each( (index, elem) => {
-            const itemValue = $(elem).attr("data-value")
-            if(itemValue <= value) {
-              $(elem).addClass("red")
-            }
-          })
-          ///
-
-          $.ajax({
-            // url: "https://api.dev-master.ninja/js/rating",
-            url: "views/ajax_doc.php",
-            method: "POST",
-            data: { rating: value },
-            success: function(result) { 
-              // Your code goes here!
-              console.log(result)
-              console.log("Result: " + result.result)
-              console.log("Rating: " + result.rating)
-            }
-          })
-      })
-    })
-    
-  </script>';
+    if(!empty($this->jsFile)){
+      echo "<script src='$this->jsFile'></script>";
+    }
   }
   private function showHeader(){
     echo '<header></header>';

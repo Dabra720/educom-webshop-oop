@@ -11,6 +11,7 @@ class PageModel{
   public $values = array();
   public $errors = array();
   public $user = NULL;
+  protected $valid = false;
   protected $crud;
 
   public function __construct($copy){

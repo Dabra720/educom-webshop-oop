@@ -165,6 +165,7 @@ class PageController{
       case 'detail':
         include_once "views/detail_doc.php";
         $view = new DetailDoc($this->model);
+        $view->setJsFile('rating.js');
         break;
       case 'cart':
         require_once "views/cart_doc.php";
