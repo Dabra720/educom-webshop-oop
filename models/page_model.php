@@ -68,6 +68,9 @@ class PageModel{
       return false;
     }
   }
+  public function getUserId(){
+    return $this->sessionManager->getCurrentUser('id');
+  }
 
   // Voor elke pagina die alleen voor logged in users is.
   public function loginCheck(){

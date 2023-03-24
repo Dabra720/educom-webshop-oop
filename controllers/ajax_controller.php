@@ -6,30 +6,54 @@ Indien een gebruiker is ingelogd, kan deze ook op een ster onder het product kli
 - Deze zal de nieuwe rating voor dit product toevoegen of bijwerken voor dit product, waarna hij het nieuwe "gemiddelde" rating voor dat product terugstuurt.
 - In javascript update je het aantal sterren met dit nieuwe gemiddelde.
 */
+require_once "views/ajax_doc.php";
 
 class AjaxController{
   private $crud;
+  private $userId;
 
   public function __construct($crud)
   {
     $this->crud = new RatingCrud($crud);
+    $this->userId = $_SESSION['id'];
   }
 
   public function handleAction(){
-    // $action = Util::getUrlVar('function');
-    $action = Util::getPostVar('function');
+    Util::logDebug('<< Action handle >>');
+    $action = Util::getUrlVar('function');
+    $ajax = new AjaxDoc();
     switch ($action){
       case "setRating":
-        $ajax = new AjaxDoc();
-        $ajax->getRating(Util::getPostVar('rating'), 2);
+        Util::logDebug('<< setting rating: >>');
+        var_dump($_POST);
+        // $productId = Util::getPostVar('product_id');
+        $productId = Util::getUrlVar('id');
+        Util::logDebug('<< product id: >>' . $productId);
+        var_dump(get_object_vars($this->crud->readUserById(2)));
+        $rating = $this->crud->readUserProductRating($this->userId, $productId);
+        if($rating){
+          $ajax->setRating($rating);
+        } else{
+          $ajax->setRating(array('rating'=>0, 'product_id'=>$productId));
+        }
         break;
       case "getRating":
-
+        $ajax->getRating(Util::getPostVar('rating'), 2);
         break;
       default:
-        echo "Handle that action!";
-      }
+        // echo "Handle that action!";
     }
+  }
+
+  // private function doesRatingExist($userid, $productid){
+  //   if($this->crud->readUserProductRating($userid, $productid)){
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+
+  // }
+
   
 
 

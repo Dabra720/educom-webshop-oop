@@ -12,10 +12,17 @@ class PageController{
   }
 
   public function handleRequest(){
+    $action = Util::getUrlVar('action');
     $this->getRequest();
-    $this->processAction(); // <-----------
-    $this->processRequest();
-    $this->showResponsePage();
+    // Util::logDebug('Action: ' . $action . ' En Product: ' . Util::getUrlVar('id'));
+    if(!empty($action)){
+      Util::logDebug('Process Action: ' . $action);
+      $this->processAction(); // <-----------
+    } else{
+      $this->processRequest();
+      $this->showResponsePage();
+    }
+    
   }
 
   // From client
@@ -25,7 +32,8 @@ class PageController{
 
   // Business flow code
   private function processAction(){ 
-    $action = $this->model->getRequestedAction();
+    // $action = $this->model->getRequestedAction();
+    $action = Util::getUrlVar('action');
     switch($action){
       case "ajax":
         require_once "ajax_controller.php";
@@ -87,7 +95,6 @@ class PageController{
         $this->model = $this->modelFactory->createModel("product");
         $this->model->handleActions();
         $this->model->setProduct();
-        $this->processAction(); // <-----------
         break;
       case 'cart':
         $this->modelFactory->pageModel = $this->model;
@@ -158,6 +165,7 @@ class PageController{
       case 'webshop':
         require_once "views/webshop_doc.php";
         $view = new WebshopDoc($this->model);
+        $view->setJsFile('rating.js');
         break;
       case 'topFive':
         require_once "views/topFive_doc.php";

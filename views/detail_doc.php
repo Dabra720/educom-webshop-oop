@@ -6,7 +6,7 @@ class DetailDoc extends ProductDoc{
   protected function showContent()
   {
     Util::logDebug("Webshop Created.");
-    echo '<span class="star" data-value="1">*</span>
+    echo '<span class="star" data-value="1" data-id="'. $this->model->product->getId() .'">*</span>
     <span class="star" data-value="2">*</span>
     <span class="star" data-value="3">*</span>
     <span class="star" data-value="4">*</span>

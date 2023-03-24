@@ -5,7 +5,7 @@ require_once "controllers/page_controller.php";
 require_once "cruds/crud.php";
 // require_once "tests/testCrud.php";
 require_once "modelFactory.php";
-require_once "user.php";
+// require_once "user.php";
 
 $crud = new Crud();
 // $crud = new TestCrud();

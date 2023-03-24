@@ -38,11 +38,20 @@ class ModelFactory{
         $this->crud = new ProductCrud($this->crud);
         break;
       case "rating":
+        // var_dump(get_object_vars($this->readUserById(1)));
         $this->crud = new RatingCrud($this->crud);
         break;
     }
     return $this->crud;
   }
+
+  // public function readUserById($userId){
+  //   $sql = "SELECT * FROM users WHERE id=:id";
+  //   $params = array(":id"=>$userId);
+  //   $user = $this->crud->readOneRow($sql, $params, 'User');
+  //   return $user;
+  // }
+
 } 
 
 

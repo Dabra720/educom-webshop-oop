@@ -7,31 +7,67 @@
 
 $(document).ready( function() {
 
-  $(".star").click( function() {
-    const value = $(this).attr('data-value')
+  // $(".rating").each( function(i, obj){
 
-    $(".star").removeClass("red");
+  // });
 
-    /// Paint it Red!
-    $(".star").each( (index, elem) => {
-        const itemValue = $(elem).attr("data-value")
-        if(itemValue <= value) {
-          $(elem).addClass("red")
-        }
-      })
-      ///
-
+  $(".rating").each( (index, elem) => {
+    // console.log('Rating element:');
+    const productid = $(elem).attr('data-id');
+    // function(){
       $.ajax({
         // url: "https://api.dev-master.ninja/js/rating",
-        url: "index.php",
+        url: "index.php?action=ajax&function=setRating&id="+productid,
         method: "POST",
-        data: { action: 'ajax', function: 'getRating', rating: value },
+        data: { product_id: productid },
         success: function(result) { 
           // Your code goes here!
-          console.log("Result: " + result)
-          console.log("ID: " + result.id)
+          console.log("Result: " + result.result)
+          // console.log("ID: " + result.id)
           console.log("Rating: " + result.rating)
+          console.log("Product Id: " + productid)
+
+
+                /// Paint it Red!
+          $(".star").each( (index, elem) => {
+            const itemId = $(elem).attr("id")
+            if(itemId==productid){
+              const itemValue = $(elem).attr("data-index")
+              if(itemValue <= result.result) {
+                $(elem).addClass("red")
+              }
+            }
+            
+          })
+
         }
       })
+    // }
+    
   })
-})
+
+});
+    // $(".star").click( function() {
+    //   const index = $(this).attr('data-index')
+  
+    //   $(".star").removeClass("red");
+  
+    //   /// Paint it Red!
+    //   $(".star").each( (index, elem) => {
+    //       const itemValue = $(elem).attr("data-value")
+    //       if(itemValue <= value) {
+    //         $(elem).addClass("red")
+    //       }
+    //     })
+    //     ///
+
+    // $.ajax({
+    // url: "index.php?action=ajax&function=getRating",
+    // method: "POST",
+    // data: {},
+    // success: function(result){
+
+    // }
+
+  // })
+  

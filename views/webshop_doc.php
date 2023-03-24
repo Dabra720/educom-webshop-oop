@@ -15,11 +15,13 @@ class WebshopDoc extends ProductDoc{
     echo "</div>"; // card-body
     echo "</a>";
     echo "<div class='card-footer'>";
-    echo '<div><span class="star">*</span>
-    <span class="star">*</span>
-    <span class="star">*</span>
-    <span class="star">*</span>
-    <span class="star">*</span></div>';
+    echo '<div class="rating" data-id='.$product->getId().'>
+    <span class="star" id='.$product->getId().' data-index=1>*</span>
+    <span class="star" id='.$product->getId().' data-index=2>*</span>
+    <span class="star" id='.$product->getId().' data-index=3>*</span>
+    <span class="star" id='.$product->getId().' data-index=4>*</span>
+    <span class="star" id='.$product->getId().' data-index=5>*</span>
+    </div>';
     echo "<div class='float-left'>";
     echo "<h3>&#8364; ".number_format($product->getPrice(),2,',','.')."</h3>"; 
     echo "</div>"; // float-left
