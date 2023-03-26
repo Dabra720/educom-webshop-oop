@@ -9,7 +9,7 @@ function showSite(){
   ';
   showCSSLinks();
   echo '<script src="../js/jquery.js"></script>
-  <script src="../rating.js"></script>
+  <script src="../js/rating.js"></script>
   </head>';
   showBody();
 

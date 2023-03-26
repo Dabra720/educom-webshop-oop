@@ -16,8 +16,8 @@ class PageController{
     $this->getRequest();
     // Util::logDebug('Action: ' . $action . ' En Product: ' . Util::getUrlVar('id'));
     if(!empty($action)){
-      Util::logDebug('Process Action: ' . $action);
-      $this->processAction(); // <-----------
+      // Util::logDebug('Process Action: ' . $action);
+      $this->processAction($action); // <-----------
     } else{
       $this->processRequest();
       $this->showResponsePage();
@@ -31,14 +31,14 @@ class PageController{
   }
 
   // Business flow code
-  private function processAction(){ 
+  private function processAction($action){ 
     // $action = $this->model->getRequestedAction();
-    $action = Util::getUrlVar('action');
+    // $action = Util::getUrlVar('action');
     switch($action){
       case "ajax":
         require_once "ajax_controller.php";
-        $this->actionController = new AjaxController($this->modelFactory->createCrud('rating')); // <-----------
-        $this->actionController->handleAction();
+        $this->actionController = new AjaxController($this->modelFactory); // <-----------
+        $this->actionController->handleAction($_POST);
         break;
       default:
 

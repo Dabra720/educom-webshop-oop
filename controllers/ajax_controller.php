@@ -12,33 +12,39 @@ class AjaxController{
   private $crud;
   private $userId;
 
-  public function __construct($crud)
+  public function __construct($modelFactory)
   {
-    $this->crud = new RatingCrud($crud);
+    $this->crud = $modelFactory->createCrud('rating');
     $this->userId = $_SESSION['id'];
   }
 
-  public function handleAction(){
-    Util::logDebug('<< Action handle >>');
+  public function handleAction($post){
     $action = Util::getUrlVar('function');
+    $productId = Util::getUrlVar('id');
+    $rating = $this->crud->readUserProductRating($this->userId, $productId);
     $ajax = new AjaxDoc();
     switch ($action){
-      case "setRating":
-        Util::logDebug('<< setting rating: >>');
-        var_dump($_POST);
-        // $productId = Util::getPostVar('product_id');
-        $productId = Util::getUrlVar('id');
-        Util::logDebug('<< product id: >>' . $productId);
-        var_dump(get_object_vars($this->crud->readUserById(2)));
-        $rating = $this->crud->readUserProductRating($this->userId, $productId);
+      case "getRating":
+        // getRating returns JSON: {rating: 'rating', id: 'product_id'}
+        // $productId = Util::getUrlVar('id');
+        // $rating = $this->crud->readUserProductRating($this->userId, $productId);
         if($rating){
-          $ajax->setRating($rating);
+          $ajax->getRating($rating);
         } else{
-          $ajax->setRating(array('rating'=>0, 'product_id'=>$productId));
+          $ajax->getRating(array('rating'=>0, 'product_id'=>$productId));
         }
         break;
-      case "getRating":
-        $ajax->getRating(Util::getPostVar('rating'), 2);
+      case "setRating":
+        $rate = $post['rating'];
+        // var_dump($post);
+
+        if($rating){
+          $this->crud->updateRating($this->userId, $productId, $rate);
+        } else{
+          $this->crud->createRating($this->userId, $productId, $rate);
+        }
+        $rating = $this->crud->readUserProductRating($this->userId, $productId);
+        $ajax->getRating($rating);
         break;
       default:
         // echo "Handle that action!";
