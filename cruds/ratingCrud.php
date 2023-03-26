@@ -13,7 +13,7 @@ class RatingCrud{
     $sql = "INSERT INTO ratings (user_id, product_id, rating) VALUES(:userId, :productId, :rating)";
     $params = array(':userId'=>$userId, ':productId'=>$productId, ':rating'=>$rating);
 
-    $this->crud->createRow($sql, $params);
+    return $this->crud->createRow($sql, $params);
   }
 
   // per product Id de rating (1-5) bij te werken voor deze user Id.
@@ -32,26 +32,20 @@ class RatingCrud{
   }
   // per product Id de "gemiddelde" rating op te vragen.
   public function readAverageRating($productId){
-    $sql = "";
-    $params = array();
+    $sql = "SELECT product_id, AVG(rating) AS rating FROM `ratings` WHERE product_id=:product_id";
+    $params = array(':product_id'=>$productId);
 
-    $this->crud->readOneRow($sql, $params);
+    return $this->crud->readOneRow($sql, $params, NULL);
   }
 
   // een overzicht van alle "gemiddelde" ratings voor alle producten op te vragen.
   public function readAllAverageRatings(){
-    $sql = "";
+    $sql = "SELECT product_id, AVG(rating) FROM `ratings` GROUP BY product_id";
     $params = array();
 
-    $this->crud->readMultipleRows($sql, $params);
+    return $this->crud->readMultipleRows($sql, $params, NULL);
   }
 
-  public function readUserById($userId){
-    $sql = "SELECT * FROM users WHERE id=:id";
-    $params = array(":id"=>$userId);
-    $user = $this->crud->readOneRow($sql, $params, 'User');
-    return $user;
-  }
 
 }
 

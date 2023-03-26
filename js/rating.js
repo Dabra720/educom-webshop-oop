@@ -16,10 +16,9 @@ $(document).ready( function() {
       method: "POST",
       data: {},
       success: function(result) { 
-        // Your code goes here!
-        // console.log("Rating: " + result.rating)
-        // console.log("Product Id: " + productid)
-
+        console.log("Results: " + result.rating)
+        console.log("Results: " + result.id)
+        console.log("Results: " + result)
 
               /// Paint it Red!
         $(".star").each( (index, elem) => {
@@ -30,13 +29,9 @@ $(document).ready( function() {
               $(elem).addClass("red")
             }
           }
-          
         })
-
       }
     })
-    // }
-    
   })
 
   $(".star").click( function() {
@@ -49,18 +44,15 @@ $(document).ready( function() {
       if(itemId==productid){
         $(elem).removeClass("red")
       }
-      
     })
-
+    
+    console.log("Add class: ")
     $.ajax({
       // url: "https://api.dev-master.ninja/js/rating",
       url: "index.php?action=ajax&function=setRating&id="+productid,
       method: "POST",
       data: { rating: value },
       success: function(result) { 
-        // Your code goes here!
-        // console.log("Rating2: " + result.rating)
-        // console.log("Product Id2: " + productid)
 
               /// Paint it Red!
         $(".star").each( (index, elem) => {
@@ -68,6 +60,7 @@ $(document).ready( function() {
           if(itemId==productid){
             const itemValue = $(elem).attr("data-index")
             if(itemValue <= result.rating) {
+              
               $(elem).addClass("red")
             }
           }

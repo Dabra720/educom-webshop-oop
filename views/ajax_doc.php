@@ -12,14 +12,12 @@ class AjaxDoc{
     echo json_encode($array);
   }
 
-  public function setRating($rating, $id){
-    $array = array('rating'=>$rating, 'id'=>$id);
-    echo json_encode($array);
-  }
-
-  // public function showContent(){
-
+  // public function setRating($rating, $id){
+  //   $array = array('rating'=>$rating, 'id'=>$id);
+  //   echo json_encode($array);
   // }
+
+
 }
 
 

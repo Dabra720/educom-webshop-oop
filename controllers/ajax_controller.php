@@ -18,47 +18,43 @@ class AjaxController{
     $this->userId = $_SESSION['id'];
   }
 
+  // Post meegestuurd omdat ik ze anders niet meer kon ophalen
   public function handleAction($post){
     $action = Util::getUrlVar('function');
     $productId = Util::getUrlVar('id');
-    $rating = $this->crud->readUserProductRating($this->userId, $productId);
+    
     $ajax = new AjaxDoc();
     switch ($action){
       case "getRating":
-        // getRating returns JSON: {rating: 'rating', id: 'product_id'}
-        // $productId = Util::getUrlVar('id');
-        // $rating = $this->crud->readUserProductRating($this->userId, $productId);
-        if($rating){
+        // echo "Product ID: " . $productId;
+        $rating = $this->crud->readAverageRating($productId);
+        // var_dump($rating);
+        // echo $rating;
+        if($rating){ // getRating geeft JSSON{rating:rating, id:productid}
+          // Util::logDebug("Wel rating" . $rating['AVG(rating)']);
           $ajax->getRating($rating);
         } else{
-          $ajax->getRating(array('rating'=>0, 'product_id'=>$productId));
+          // Util::logDebug("Geen rating");
+          $ajax->getRating(array('rating'=>10, 'product_id'=>$productId));
         }
         break;
       case "setRating":
         $rate = $post['rating'];
-        // var_dump($post);
-
+        $rating = $this->crud->readUserProductRating($this->userId, $productId);
         if($rating){
           $this->crud->updateRating($this->userId, $productId, $rate);
         } else{
           $this->crud->createRating($this->userId, $productId, $rate);
         }
-        $rating = $this->crud->readUserProductRating($this->userId, $productId);
+        // $rating = $this->crud->readUserProductRating($this->userId, $productId);
+        $rating = $this->crud->readAverageRating($productId);
         $ajax->getRating($rating);
         break;
       default:
-        // echo "Handle that action!";
+
     }
   }
 
-  // private function doesRatingExist($userid, $productid){
-  //   if($this->crud->readUserProductRating($userid, $productid)){
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-
-  // }
 
   
 
