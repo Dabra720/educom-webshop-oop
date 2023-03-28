@@ -6,7 +6,7 @@ class Crud{
   private $username = "webshop_user";
   private $password = "lrV5Y*ABOoXF)N*a";
   private $dbname = "webshop_daan";
-  private $pdo;
+  public $pdo;
     
   // De CRUD maakt gebruik van prepared statement, die je samen met een array van values meegeeft aan deze functies.
   public function __construct()

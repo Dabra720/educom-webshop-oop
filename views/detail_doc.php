@@ -5,14 +5,14 @@ class DetailDoc extends ProductDoc{
 
   protected function showContent()
   {
-    Util::logDebug("Webshop Created.");
+    if($this->model->hasAuthorisation()){
     echo '<div class="rating" data-id='.$this->model->product->getId().'>
     <span class="star" id='.$this->model->product->getId().' data-index=1>*</span>
     <span class="star" id='.$this->model->product->getId().' data-index=2>*</span>
     <span class="star" id='.$this->model->product->getId().' data-index=3>*</span>
     <span class="star" id='.$this->model->product->getId().' data-index=4>*</span>
     <span class="star" id='.$this->model->product->getId().' data-index=5>*</span>
-    </div>';
+    </div>';}
     echo '<div class="product_detail">';
     echo '<div class="product_image">';
     echo '<img src="../educom-webshop-oop/Images/'.$this->model->product->getFilename().'" style="width:48%;height:60%;margin:auto;display:box;">';

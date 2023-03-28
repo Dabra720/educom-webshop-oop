@@ -74,20 +74,27 @@ class ProductCrud{
 
   public function createOrder($user_id, $cartContent){
     // Rollback inbouwen, -> Autocommit uit??
-    $sql = "INSERT INTO invoice (date, user_id) VALUE(CURRENT_DATE(), :id)";
-    $params = array(':id'=>$user_id);
+    try{
+      $this->crud->pdo->beginTransaction();
 
-    $last_id = $this->crud->createRow($sql, $params);
+      $sql = "INSERT INTO invoice (date, user_id) VALUE(CURRENT_DATE(), :id)";
+      $params = array(':id'=>$user_id);
 
-    foreach($cartContent as $product_id=>$quantity){
-      $sql = "INSERT INTO invoice_row(invoice_id, product_id, quantity) VALUES(:last_id, :product_id, :quantity)";
-      $params = array(':last_id'=>$last_id, ':product_id'=>$product_id, ':quantity'=>$quantity);
-      $this->crud->createRow($sql, $params);
+      $last_id = $this->crud->createRow($sql, $params);
+
+      foreach($cartContent as $product_id=>$quantity){
+        $sql = "INSERT INTO invoice_row(invoice_id, product_id, quantity) VALUES(:last_id, :product_id, :quantity)";
+        $params = array(':last_id'=>$last_id, ':product_id'=>$product_id, ':quantity'=>$quantity);
+        $this->crud->createRow($sql, $params);
+      }
+
+      $this->crud->pdo->commit();
+
+    }catch(PDOException $e){
+      $this->crud->pdo->rollBack();
+      throw $e;
     }
-
   }
-
-
 }
 
 ?>
